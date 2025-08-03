@@ -2,6 +2,8 @@ package kabox.fitmate.Model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 
 @Entity
 public class WorkoutPlan {

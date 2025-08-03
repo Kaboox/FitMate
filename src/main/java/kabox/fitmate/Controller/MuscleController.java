@@ -7,12 +7,10 @@ import kabox.fitmate.Model.Muscle;
 import kabox.fitmate.Repository.MuscleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/muscles")
@@ -32,6 +30,18 @@ public class MuscleController {
                 .orElseThrow(() -> new EntityNotFoundException("Muscle not found"));
 
         return ResponseEntity.ok(muscle);
+    }
+
+    @GetMapping("/by-category/{category}")
+    public List<Muscle> getMusclesByCategory(@PathVariable String category) {
+        return muscleRepository.findByCategory(category);
+    }
+
+
+    @PostMapping
+    public ResponseEntity<Muscle> addMuscle(@RequestBody Muscle muscle) {
+        Muscle savedMuscle = muscleRepository.save(muscle);
+        return ResponseEntity.ok(savedMuscle);
     }
 
 }
