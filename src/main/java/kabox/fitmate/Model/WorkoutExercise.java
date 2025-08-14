@@ -19,5 +19,4 @@ public class WorkoutExercise {
 
     private int sets;
     private int reps;
-    private int orderIndex;
 }
