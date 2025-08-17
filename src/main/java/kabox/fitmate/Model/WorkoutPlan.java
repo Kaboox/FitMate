@@ -25,7 +25,7 @@ public class WorkoutPlan {
             joinColumns = @JoinColumn(name = "workoutplan_id"),
             inverseJoinColumns = @JoinColumn(name = "exercise_id")
     )
-    private List<Exercise> exercises = new ArrayList<>();
+    private List<WorkoutExercise> exercises = new ArrayList<>();
 
     public Long getId() {
         return id;
