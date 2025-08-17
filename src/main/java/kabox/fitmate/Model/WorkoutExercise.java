@@ -2,6 +2,8 @@ package kabox.fitmate.Model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class WorkoutExercise {
 
@@ -17,6 +19,30 @@ public class WorkoutExercise {
     @JoinColumn(name = "exercise_id")
     private Exercise exercise;
 
-    private int sets;
-    private int reps;
+    @OneToMany(mappedBy = "workoutExercise", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WorkoutSet> sets;
+
+    public Long getId() {
+        return id;
+    }
+
+    public Exercise getExercise() {
+        return exercise;
+    }
+
+    public WorkoutPlan getWorkoutPlan() {
+        return workoutPlan;
+    }
+
+    public void setWorkoutPlan(WorkoutPlan workoutPlan) {
+        this.workoutPlan = workoutPlan;
+    }
+
+    public void setExercise(Exercise exercise) {
+        this.exercise = exercise;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

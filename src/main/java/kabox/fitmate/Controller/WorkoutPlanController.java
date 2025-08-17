@@ -2,8 +2,12 @@ package kabox.fitmate.Controller;
 
 
 import jakarta.persistence.EntityNotFoundException;
+import kabox.fitmate.Model.Exercise;
 import kabox.fitmate.Model.Muscle;
+import kabox.fitmate.Model.WorkoutExercise;
 import kabox.fitmate.Model.WorkoutPlan;
+import kabox.fitmate.Repository.ExerciseRepository;
+import kabox.fitmate.Repository.WorkoutExerciseRepository;
 import kabox.fitmate.Repository.WorkoutPlanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +21,12 @@ public class WorkoutPlanController {
 
     @Autowired
     private WorkoutPlanRepository workoutPlanRepository;
+
+    @Autowired
+    private WorkoutExerciseRepository workoutExerciseRepository;
+
+    @Autowired
+    private ExerciseRepository exerciseRepository;
 
 
     // Get all plans of logged user
