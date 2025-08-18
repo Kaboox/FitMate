@@ -19,14 +19,8 @@ public class WorkoutPlan {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
-    @JoinTable(
-            name = "workoutplan_exercises",
-            joinColumns = @JoinColumn(name = "workoutplan_id"),
-            inverseJoinColumns = @JoinColumn(name = "exercise_id")
-    )
+    @OneToMany(mappedBy = "workoutPlan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WorkoutExercise> exercises = new ArrayList<>();
-
     public Long getId() {
         return id;
     }
@@ -47,5 +41,7 @@ public class WorkoutPlan {
         this.user = user;
     }
 
-
+    public void setExercises(List<WorkoutExercise> exercises) {
+        this.exercises = exercises;
+    }
 }
