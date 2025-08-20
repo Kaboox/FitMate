@@ -44,4 +44,10 @@ public class MuscleController {
         return ResponseEntity.ok(savedMuscle);
     }
 
+    // --- Dodawanie wielu mięśni naraz ---
+    @PostMapping("/batch")
+    public List<Muscle> addMuscles(@RequestBody List<Muscle> muscles) {
+        return muscleRepository.saveAll(muscles);
+    }
+
 }

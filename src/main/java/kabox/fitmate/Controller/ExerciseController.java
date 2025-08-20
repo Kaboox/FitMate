@@ -49,6 +49,35 @@ public class ExerciseController {
         return ResponseEntity.ok(saved);
     }
 
+    // Dodanie wielu ćwiczeń naraz
+    @PostMapping("/batch")
+    public ResponseEntity<List<Exercise>> addExercises(@RequestBody List<ExerciseRequest> requests) {
+        List<Exercise> exercises = requests.stream().map(request -> {
+            Muscle primaryMuscle = muscleRepository.findById(request.getPrimaryMuscleId())
+                    .orElseThrow(() -> new EntityNotFoundException("Primary muscle not found"));
+
+            Exercise exercise = new Exercise();
+            exercise.setName(request.getName());
+            exercise.setDescription(request.getDescription());
+            exercise.setVideoUrl(request.getVideoUrl());
+            exercise.setPrimaryMuscle(primaryMuscle);
+
+            if (request.getSecondaryMuscleIds() != null && !request.getSecondaryMuscleIds().isEmpty()) {
+                List<Muscle> secondaryMuscles = request.getSecondaryMuscleIds().stream()
+                        .map(id -> muscleRepository.findById(id)
+                                .orElseThrow(() -> new EntityNotFoundException("Secondary muscle not found: " + id)))
+                        .collect(Collectors.toList());
+                exercise.setSecondaryMuscles(secondaryMuscles);
+            }
+
+            return exercise;
+        }).collect(Collectors.toList());
+
+        List<Exercise> saved = exerciseRepository.saveAll(exercises);
+        return ResponseEntity.ok(saved);
+    }
+
+
     // Pobranie wszystkich ćwiczeń
     @GetMapping
     public List<Exercise> getAllExercises() {
