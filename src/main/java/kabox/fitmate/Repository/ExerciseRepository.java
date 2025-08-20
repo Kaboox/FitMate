@@ -13,5 +13,5 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
     // Cwiczenia po czesci nazwy np barbell - barbell row
     List<Exercise> findByNameContainingIgnoreCase(String fragment);
 
-    List<Exercise> findByMuscle(Muscle muscle);
+    List<Exercise> findByPrimaryMuscle(Muscle muscle);
 }

@@ -1,0 +1,54 @@
+package kabox.fitmate.dto;
+
+import java.util.List;
+
+public class ExerciseRequest {
+    private String name;
+    private String description;
+    private String videoUrl;
+    private Long primaryMuscleId;
+    private List<Long> secondaryMuscleIds;
+
+    // gettery + settery
+
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Long getPrimaryMuscleId() {
+        return primaryMuscleId;
+    }
+
+    public List<Long> getSecondaryMuscleIds() {
+        return secondaryMuscleIds;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrimaryMuscleId(Long primaryMuscleId) {
+        this.primaryMuscleId = primaryMuscleId;
+    }
+
+    public void setSecondaryMuscleIds(List<Long> secondaryMuscleIds) {
+        this.secondaryMuscleIds = secondaryMuscleIds;
+    }
+}
