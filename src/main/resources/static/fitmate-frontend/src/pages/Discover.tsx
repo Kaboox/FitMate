@@ -1,7 +1,9 @@
+import NavbarDesktop from "../components/NavbarDesktop";
+
 export default function Discover() {
     return (
         <div className="bg-black w-screen h-screen">
-         {/* Desktop */}
+         <NavbarDesktop></NavbarDesktop>
 
 
          {/* Mobile */}
