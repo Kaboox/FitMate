@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/exercises")
+@CrossOrigin(origins = "http://localhost:5173") // dev server Vite
 public class ExerciseController {
 
     @Autowired
@@ -34,6 +35,7 @@ public class ExerciseController {
         exercise.setName(request.getName());
         exercise.setDescription(request.getDescription());
         exercise.setVideoUrl(request.getVideoUrl());
+        exercise.setImageUrl(request.getImageUrl());
         exercise.setPrimaryMuscle(primaryMuscle);
 
         // --- Secondary (opcjonalne) ---
@@ -60,6 +62,7 @@ public class ExerciseController {
             exercise.setName(request.getName());
             exercise.setDescription(request.getDescription());
             exercise.setVideoUrl(request.getVideoUrl());
+            exercise.setImageUrl(request.getImageUrl());
             exercise.setPrimaryMuscle(primaryMuscle);
 
             if (request.getSecondaryMuscleIds() != null && !request.getSecondaryMuscleIds().isEmpty()) {

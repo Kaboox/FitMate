@@ -12,7 +12,7 @@ export default function NavbarDesktop() {
   const [active, setActive] = useState(0);
 
   return (
-    <div className="flex flex-col justify-between items-center gap-8 w-1/12 h-full py-10 bg-neutral-800 rounded-md">
+    <div className="flex flex-col justify-between items-center gap-8 w-full h-screen sticky top-0 py-10 bg-neutral-800 rounded-md">
     
       <h1 className="text-xl font-mono text-white">FitMate</h1>
 

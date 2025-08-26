@@ -13,6 +13,7 @@ public class Exercise {
     private String name;
     private String description;
     private String videoUrl;
+    private String imageUrl;
 
     // --- Primary muscle ---
     @ManyToOne
@@ -33,6 +34,7 @@ public class Exercise {
     public String getName() { return name; }
     public String getDescription() { return description; }
     public String getVideoUrl() { return videoUrl; }
+    public String getImageUrl() { return imageUrl; }
     public Muscle getPrimaryMuscle() { return primaryMuscle; }
     public List<Muscle> getSecondaryMuscles() { return secondaryMuscles; }
 
@@ -40,6 +42,7 @@ public class Exercise {
     public void setName(String name) { this.name = name; }
     public void setDescription(String description) { this.description = description; }
     public void setVideoUrl(String videoUrl) { this.videoUrl = videoUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
     public void setPrimaryMuscle(Muscle primaryMuscle) { this.primaryMuscle = primaryMuscle; }
     public void setSecondaryMuscles(List<Muscle> secondaryMuscles) { this.secondaryMuscles = secondaryMuscles; }
 }

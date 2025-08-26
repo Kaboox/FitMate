@@ -4,13 +4,16 @@ import NavbarMobile from "../components/NavbarMobile";
 
 export default function Discover() {
     return (
-        <div className="flex gap-8 bg-black w-screen h-screen">
-         <NavbarDesktop></NavbarDesktop>
-         <ExerciseList></ExerciseList>
-        {/* <NavbarMobile></NavbarMobile> */}
+        <div className="flex flex-col md:flex-row gap-8 bg-black w-full h-full">
+            <div className="hidden md:flex w-1/12">
+                <NavbarDesktop></NavbarDesktop>
+            </div>
+            <div className="flex md:hidden w-full sticky top-0 z-50">
+                <NavbarMobile></NavbarMobile>
+            </div>
 
-         {/* Mobile */}
-         <div className="block md:hidden"></div>
+            <ExerciseList></ExerciseList>
+
         </div>
     )
 }

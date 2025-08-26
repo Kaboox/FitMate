@@ -6,6 +6,7 @@ public class ExerciseRequest {
     private String name;
     private String description;
     private String videoUrl;
+    private String imageUrl;
     private Long primaryMuscleId;
     private List<Long> secondaryMuscleIds;
 
@@ -15,6 +16,7 @@ public class ExerciseRequest {
     public String getVideoUrl() {
         return videoUrl;
     }
+    public String getImageUrl() { return imageUrl; }
 
     public String getDescription() {
         return description;
@@ -35,6 +37,7 @@ public class ExerciseRequest {
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
     }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     public void setDescription(String description) {
         this.description = description;

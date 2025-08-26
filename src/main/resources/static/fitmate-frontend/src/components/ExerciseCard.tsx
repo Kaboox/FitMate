@@ -12,7 +12,7 @@ export default function ExerciseCard({
   imageUrl,
 }: ExerciseCardProps) {
   return (
-    <div className="bg-neutral-800 text-white rounded-xl shadow-md p-4 flex gap-4 hover:bg-neutral-700 transition">
+    <div className="max-w-xl bg-neutral-800 text-white rounded-xl shadow-md p-4 flex gap-4 hover:bg-neutral-700 transition">
       {/* Miniatura ćwiczenia */}
       <img
         src={imageUrl}
@@ -21,7 +21,7 @@ export default function ExerciseCard({
       />
 
       {/* Tekst */}
-      <div className="flex flex-col justify-between">
+      <div className="flex flex-col justify-between flex-1">
         <div>
           <h3 className="text-lg font-semibold">{name}</h3>
           <p className="text-sm text-green-400">{category}</p>
