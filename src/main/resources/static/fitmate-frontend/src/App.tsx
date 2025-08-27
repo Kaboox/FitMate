@@ -1,3 +1,4 @@
+import { NavbarProvider } from "./context/NavbarContext"
 import Discover from "./pages/Discover"
 
 
@@ -5,7 +6,9 @@ function App() {
 
   return (
     <>
-      <Discover></Discover>
+      <NavbarProvider>
+        <Discover></Discover>
+      </NavbarProvider>
     </>
   )
 }

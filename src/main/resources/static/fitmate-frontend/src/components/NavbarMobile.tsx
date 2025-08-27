@@ -1,15 +1,24 @@
 import { useState } from "react";
-import { Menu, X, Search, Home, Star, Flame } from "lucide-react";
+import { Menu, X, Search, Star, Flame, ListFilter } from "lucide-react";
+import { useNavbar } from "../context/NavbarContext";
 
 const navItems = [
-  { id: 1, icon: <Search size={24} />, label: "Discover" },
-  { id: 2, icon: <Home size={24} />, label: "Home" },
-  { id: 3, icon: <Star size={24} />, label: "Favorites" },
-  { id: 4, icon: <Flame size={24} />, label: "Trending" },
-];
+  { id: "search", icon: <Search size={24} />, label: "Discover" },
+  { id: "filter", icon: <ListFilter size={24} />, label: "Category" },
+  { id: "favorites", icon: <Star size={24} />, label: "Favorites" },
+  { id: "trending", icon: <Flame size={24} />, label: "Trending" },
+] as const;
+
+type ActiveTab = typeof navItems[number]["id"]; 
 
 export default function NavbarMobile() {
   const [isOpen, setIsOpen] = useState(false);
+  const { activeTab, setActiveTab } = useNavbar();
+
+   const handleClick = (option: ActiveTab) => {
+    setActiveTab(option);  // ustawiamy aktywną opcję w context
+    setIsOpen(false);   // zamykamy menu
+  };
 
   return (
     <div className="w-full sticky top-0 bg-neutral-800 px-4 py-3 flex justify-between items-center">
@@ -48,7 +57,7 @@ export default function NavbarMobile() {
           {navItems.map((item) => (
             <div
               key={item.id}
-              onClick={() => setIsOpen(false)} // zamyka menu po kliknięciu
+              onClick={() => handleClick(item.id as ActiveTab)} // zamyka menu po kliknięciu
               className="p-2 text-white hover:text-green-400 cursor-pointer flex gap-2 items-center"
             >
               {item.icon}
