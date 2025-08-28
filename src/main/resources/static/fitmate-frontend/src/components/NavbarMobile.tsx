@@ -13,11 +13,11 @@ type ActiveTab = typeof navItems[number]["id"];
 
 export default function NavbarMobile() {
   const [isOpen, setIsOpen] = useState(false);
-  const { activeTab, setActiveTab } = useNavbar();
+  const { activeTab, setActiveTab, toggleActiveTab } = useNavbar();
 
    const handleClick = (option: ActiveTab) => {
-    setActiveTab(option);  // ustawiamy aktywną opcję w context
-    setIsOpen(false);   // zamykamy menu
+    toggleActiveTab(option)  
+    setIsOpen(false);
   };
 
   return (
@@ -57,8 +57,8 @@ export default function NavbarMobile() {
           {navItems.map((item) => (
             <div
               key={item.id}
-              onClick={() => handleClick(item.id as ActiveTab)} // zamyka menu po kliknięciu
-              className="p-2 text-white hover:text-green-400 cursor-pointer flex gap-2 items-center"
+              onClick={() => handleClick(item.id)} // zamyka menu po kliknięciu
+              className={`p-2 cursor-pointer flex gap-2 items-center ${activeTab === item.id ? "text-green-400" : "text-white"}`}
             >
               {item.icon}
               <span className="text-sm">{item.label}</span>

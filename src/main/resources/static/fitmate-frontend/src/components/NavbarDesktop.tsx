@@ -9,7 +9,7 @@ const navItems = [
 ] as const;
 
 export default function NavbarDesktop() {
-  const { activeTab, setActiveTab } = useNavbar()
+  const { activeTab, setActiveTab, toggleActiveTab } = useNavbar()
 
   return (
     <div className="flex flex-col justify-between items-center gap-8 w-full h-screen sticky top-0 py-10 bg-neutral-800 rounded-md">
@@ -21,7 +21,7 @@ export default function NavbarDesktop() {
         {navItems.map((item) => (
           <div
             key={item.id}
-            onClick={() => setActiveTab(item.id)}
+            onClick={() => toggleActiveTab(item.id)}
             className={`p-2 rounded-xl cursor-pointer transition ${
               activeTab === item.id
                 ? "bg-neutral-700 text-green-400"

@@ -1,6 +1,7 @@
 type ExerciseCardProps = {
   name: string;
   category: string;
+  muscleCategory: string;
   description: string;
   imageUrl: string;
 };
@@ -8,6 +9,7 @@ type ExerciseCardProps = {
 export default function ExerciseCard({
   name,
   category,
+  muscleCategory,
   description,
   imageUrl,
 }: ExerciseCardProps) {
@@ -25,6 +27,7 @@ export default function ExerciseCard({
         <div>
           <h3 className="text-lg font-semibold">{name}</h3>
           <p className="text-sm text-green-400">{category}</p>
+          <p className="text-sm text-green-400">{muscleCategory}</p>
           <p className="text-xs text-gray-300 mt-2 line-clamp-2">{description}</p>
         </div>
 

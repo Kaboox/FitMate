@@ -1,6 +1,7 @@
 export type Muscle = {
   id: number;
   name: string;
+  category: string;
 };
 
 export type Exercise = {
