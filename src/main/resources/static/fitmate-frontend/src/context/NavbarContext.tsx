@@ -10,6 +10,9 @@ type NavbarContextType = {
     setSearchTerm: (term: string) => void;
     selectedCategory: string;
     setSelectedCategory: (cat: string) => void;
+
+    favorites: number[];
+    toggleFavorite: (id: number) => void;
 }
 
 
@@ -19,6 +22,10 @@ export function NavbarProvider({ children }: { children: ReactNode }) {
     const [activeTab, setActiveTab] = useState<ActiveTab>("discover");
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("");
+    const [favorites, setFavorites] = useState<number[]>(() => {
+        const stored = localStorage.getItem("favorites");
+        return stored ? JSON.parse(stored) : [];
+    })
 
     const toggleActiveTab = (tab: ActiveTab) => {
         if (activeTab === tab) {
@@ -34,10 +41,18 @@ export function NavbarProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    const toggleFavorite = (id: number) => {
+        setFavorites(prev => {
+            const newFavs = prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id];
+            localStorage.setItem("favorites", JSON.stringify(newFavs));
+            return newFavs;
+        })
+    }
+
     
 
     return (
-        <NavbarContext.Provider value={{activeTab, setActiveTab, toggleActiveTab, searchTerm, setSearchTerm, selectedCategory, setSelectedCategory}}>
+        <NavbarContext.Provider value={{activeTab, setActiveTab, toggleActiveTab, searchTerm, setSearchTerm, selectedCategory, setSelectedCategory, favorites, toggleFavorite}}>
             {children}
         </NavbarContext.Provider>
     )

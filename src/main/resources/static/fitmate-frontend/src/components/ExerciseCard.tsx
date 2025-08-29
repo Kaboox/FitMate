@@ -1,4 +1,8 @@
+import { Heart } from "lucide-react";
+import { useNavbar } from "../context/NavbarContext";
+
 type ExerciseCardProps = {
+  id: number;
   name: string;
   category: string;
   muscleCategory: string;
@@ -7,14 +11,18 @@ type ExerciseCardProps = {
 };
 
 export default function ExerciseCard({
+  id,
   name,
   category,
   muscleCategory,
   description,
   imageUrl,
 }: ExerciseCardProps) {
+    const { favorites, toggleFavorite } = useNavbar();
+    const isFav = favorites.includes(id);
+
   return (
-    <div className="max-w-xl bg-neutral-800 text-white rounded-xl shadow-md p-4 flex gap-4 hover:bg-neutral-700 transition">
+    <div className="max-w-xl bg-neutral-800 text-white rounded-xl shadow-md p-4 flex gap-4 hover:bg-neutral-700 transition relative">
       {/* Miniatura ćwiczenia */}
       <img
         src={imageUrl}
@@ -27,7 +35,7 @@ export default function ExerciseCard({
         <div>
           <h3 className="text-lg font-semibold">{name}</h3>
           <p className="text-sm text-green-400">{category}</p>
-          <p className="text-sm text-green-400">{muscleCategory}</p>
+          {/* //<p className="text-sm text-green-400">{muscleCategory}</p> */}
           <p className="text-xs text-gray-300 mt-2 line-clamp-2">{description}</p>
         </div>
 
@@ -35,6 +43,17 @@ export default function ExerciseCard({
           Szczegóły
         </button>
       </div>
+
+       {/* Ikonka serca */}
+      <button
+        onClick={() => toggleFavorite(id)}
+        className="absolute top-2 right-2 text-red-400"
+      >
+        <Heart
+          size={20}
+          className={isFav ? "fill-red-500" : "hover:fill-red-400"}
+        />
+      </button>
     </div>
   );
 }

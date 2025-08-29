@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 export default function ExerciseList() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
-  const { activeTab, searchTerm, setSearchTerm, selectedCategory, setSelectedCategory } = useNavbar();
+  const { activeTab, searchTerm, setSearchTerm, selectedCategory, setSelectedCategory, favorites } = useNavbar();
 
   useEffect(() => {
     fetch("http://localhost:8080/exercises")
@@ -16,14 +16,18 @@ export default function ExerciseList() {
   }, [])
 
   const filtered = exercises.filter((ex) => {
-  const matchesSearch =
-    ex.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    ex.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch =
+      ex.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ex.description.toLowerCase().includes(searchTerm.toLowerCase());
 
-  const matchesCategory =
-    selectedCategory === "" || ex.primaryMuscle?.category === selectedCategory;
+    const matchesCategory =
+      selectedCategory === "" || ex.primaryMuscle?.category === selectedCategory;
 
-  return matchesSearch && matchesCategory;
+    const matchesFavorites =
+      activeTab !== "favorites" || favorites.includes(ex.id);
+
+
+  return matchesSearch && matchesCategory && matchesFavorites;
 });
 
 
@@ -66,6 +70,7 @@ export default function ExerciseList() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filtered.map((ex) => (
           <ExerciseCard
+            id={ex.id}
             key={ex.id}
             name={ex.name}
             category={ex.primaryMuscle?.name || "Brak"}
