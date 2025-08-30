@@ -16,13 +16,12 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-
-
+    @JsonIgnore
     private String password;
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private Role role; // ADMIN / USER / PREMIUM
+    private Role role = Role.USER; // ADMIN / USER / PREMIUM
 
     @OneToMany(mappedBy = "user")
     private List<WorkoutPlan> workoutPlans;
