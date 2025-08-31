@@ -24,10 +24,10 @@ public class ExerciseController {
     @Autowired
     private MuscleRepository muscleRepository;
 
-    // Dodanie ćwiczenia
+    // Add an exercise
     @PostMapping
     public ResponseEntity<Exercise> addExercise(@RequestBody ExerciseRequest request) {
-        // --- Primary ---
+
         Muscle primaryMuscle = muscleRepository.findById(request.getPrimaryMuscleId())
                 .orElseThrow(() -> new EntityNotFoundException("Primary muscle not found"));
 
@@ -38,7 +38,7 @@ public class ExerciseController {
         exercise.setImageUrl(request.getImageUrl());
         exercise.setPrimaryMuscle(primaryMuscle);
 
-        // --- Secondary (opcjonalne) ---
+
         if (request.getSecondaryMuscleIds() != null && !request.getSecondaryMuscleIds().isEmpty()) {
             List<Muscle> secondaryMuscles = request.getSecondaryMuscleIds().stream()
                     .map(id -> muscleRepository.findById(id)
@@ -51,7 +51,7 @@ public class ExerciseController {
         return ResponseEntity.ok(saved);
     }
 
-    // Dodanie wielu ćwiczeń naraz
+    // Post many exercises
     @PostMapping("/batch")
     public ResponseEntity<List<Exercise>> addExercises(@RequestBody List<ExerciseRequest> requests) {
         List<Exercise> exercises = requests.stream().map(request -> {
@@ -81,13 +81,13 @@ public class ExerciseController {
     }
 
 
-    // Pobranie wszystkich ćwiczeń
+    // Get all exercises in a list
     @GetMapping
     public List<Exercise> getAllExercises() {
         return exerciseRepository.findAll();
     }
 
-    // Pobranie ćwiczenia po ID
+    // Get exercise by ID
     @GetMapping("/{id}")
     public ResponseEntity<Exercise> getExerciseById(@PathVariable Long id) {
         return exerciseRepository.findById(id)

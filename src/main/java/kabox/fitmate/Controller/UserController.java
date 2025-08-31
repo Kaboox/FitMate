@@ -33,12 +33,6 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserRegisterRequest request) {
-        User newUser = userService.registerUser(request);
-        return ResponseEntity.ok(newUser);
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         if (!userRepository.existsById(id)) {
@@ -48,17 +42,4 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-
-//    @PostMapping("/login")
-//    public ResponseEntity<String> login(@RequestBody User loginRequest) {
-//        return userRepository.findByEmail(loginRequest.getEmail())
-//                .map(user -> {
-//                    if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-//                        return ResponseEntity.ok("Login successful!");
-//                    } else {
-//                        return ResponseEntity.status(401).body("Invalid credentials");
-//                    }
-//                })
-//                .orElse(ResponseEntity.status(401).body("User not found"));
-//    }
 }
