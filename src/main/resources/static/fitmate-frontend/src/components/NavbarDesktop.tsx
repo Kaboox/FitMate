@@ -1,5 +1,7 @@
-import { ListFilter, Search, Star, Flame } from "lucide-react";
+import { ListFilter, Search, Star, Flame, LogIn } from "lucide-react";
 import { useNavbar } from "../context/NavbarContext";
+import { Link } from "react-router-dom";
+
 
 const navItems = [
   { id: "search", icon: <Search size={24} />, label: "Discover" },
@@ -31,6 +33,12 @@ export default function NavbarDesktop() {
             {item.icon}
           </div>
         ))}
+      </div>
+
+      <div className="">
+        <Link to="/register" className="p-2 hover:text-green-500 transition text-white">
+          <LogIn size={24} />
+        </Link>
       </div>
 
       {/* Hidden for now (when logged in) */}
