@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -59,7 +60,12 @@ export default function Register() {
           Register
         </button>
 
-        <p>Already have an account? <span>Log in</span></p>
+        <div className="flex gap-2 text-gray-300">
+          <p>Already have an account?</p> <Link to="/login" className="text-green-600 hover:text-green-700 cursor-pointer">Log in</Link>  
+        </div> 
+        <div className="flex gap-2 text-gray-300">
+          <p>Go back to</p> <Link to="/" className="text-green-600 hover:text-green-700 cursor-pointer">Main page</Link>  
+        </div> 
       </form>
     </div>
   );

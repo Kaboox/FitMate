@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const [form, setForm] = useState({
@@ -47,6 +48,13 @@ export default function Login() {
         >
           Login
         </button>
+
+        <div className="flex gap-2 text-gray-300">
+          <p>Don't have an account?</p> <Link to="/register" className="text-green-600 hover:text-green-700 cursor-pointer">Create account</Link>  
+        </div> 
+        <div className="flex gap-2 text-gray-300">
+          <p>Go back to</p> <Link to="/" className="text-green-600 hover:text-green-700 cursor-pointer">Main page</Link>  
+        </div> 
       </form>
     </div>
   );

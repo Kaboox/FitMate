@@ -1,5 +1,6 @@
 import { Heart } from "lucide-react";
 import { useNavbar } from "../context/NavbarContext";
+import { Link } from "react-router-dom";
 
 type ExerciseCardProps = {
   id: number;
@@ -39,9 +40,11 @@ export default function ExerciseCard({
           <p className="text-xs text-gray-300 mt-2 line-clamp-2">{description}</p>
         </div>
 
-        <button className="mt-2 text-sm text-green-400 hover:underline self-start">
-          Szczegóły
-        </button>
+        <Link to={`/exercise/${id}`}>
+          <button className="mt-2 text-sm text-green-400 hover:underline self-start">
+            Szczegóły
+          </button>
+        </Link>
       </div>
 
        {/* Ikonka serca */}
