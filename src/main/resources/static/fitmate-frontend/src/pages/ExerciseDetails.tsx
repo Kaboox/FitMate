@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 interface Muscle {
   id: number;
@@ -10,7 +11,6 @@ interface Exercise {
   id: number;
   name: string;
   description: string;
-  category: string;
   videoUrl: string;
   imageUrl: string;
   primaryMuscle: Muscle;
@@ -18,36 +18,20 @@ interface Exercise {
 }
 
 export default function ExerciseDetail() {
+    const {id} = useParams<{ id: string }>();
 
     const [exerciseData, setExerciseData] = useState<Exercise | null>(null);
 
 
     useEffect(() => {
-        fetch('http://localhost:8080/exercises/2')
+        if (!id) return;
+
+        fetch(`http://localhost:8080/exercises/${id}`)
             .then(response => response.json())
             .then(data => setExerciseData(data))
             .catch(error => console.error('Error fetching exercise data:', error));
         document.title = "Exercise Details - FitMate";
     }, []);
-
-//     const exercise = {
-//     name: exerciseData.name,
-//     category: exerciseData.category,
-//     muscles: ,
-//     description:
-//       "The bench press is a fundamental strength exercise that targets the chest, triceps, and shoulders. Keep your back flat, control the movement, and avoid bouncing the bar.",
-//     mistakes: [
-//       "Arching your back excessively",
-//       "Bouncing the bar off the chest",
-//       "Not controlling the eccentric phase",
-//     ],
-//     imageUrl: "https://via.placeholder.com/1200x400", // Hero image placeholder
-//     videoUrl: "https://www.youtube.com/embed/rT7DgCr-3pg", // przykładowy YT embed
-//   };
-
-
-
-
 
     if (!exerciseData) {
     return (
@@ -71,7 +55,6 @@ export default function ExerciseDetail() {
         />
         <div className="absolute bottom-4 left-6 bg-black bg-opacity-60 px-4 py-2 rounded-lg">
           <h1 className="text-3xl md:text-5xl font-bold">{exerciseData.name}</h1>
-          <p className="text-sm text-gray-300">{exerciseData.category}</p>
         </div>
       </div>
 
@@ -82,7 +65,7 @@ export default function ExerciseDetail() {
             key={idx}
             className="bg-green-600 px-3 py-1 rounded-full text-sm font-medium"
           >
-            {/* {muscle} */}
+            {muscle.name}
           </span>
         ))}
       </div>
