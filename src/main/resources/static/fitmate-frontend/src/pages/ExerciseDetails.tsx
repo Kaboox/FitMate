@@ -55,6 +55,7 @@ export default function ExerciseDetail() {
         />
         <div className="absolute bottom-4 left-6 bg-black bg-opacity-60 px-4 py-2 rounded-lg">
           <h1 className="text-3xl md:text-5xl font-bold">{exerciseData.name}</h1>
+          <h3 className="text-xl md:text-2xl font-bold">{exerciseData.primaryMuscle.category}</h3>
         </div>
       </div>
 
