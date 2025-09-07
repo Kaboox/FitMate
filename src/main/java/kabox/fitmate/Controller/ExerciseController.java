@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +46,13 @@ public class ExerciseController {
                             .orElseThrow(() -> new EntityNotFoundException("Secondary muscle not found: " + id)))
                     .collect(Collectors.toList());
             exercise.setSecondaryMuscles(secondaryMuscles);
+        }
+
+        if (request.getMistakes() != null && !request.getMistakes().isEmpty()) {
+            List<String> mistakes = new ArrayList<>(request.getMistakes());
+
+            exercise.setMistakes(mistakes);
+
         }
 
         Exercise saved = exerciseRepository.save(exercise);

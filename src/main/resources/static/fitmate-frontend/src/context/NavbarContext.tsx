@@ -29,13 +29,13 @@ export function NavbarProvider({ children }: { children: ReactNode }) {
 
     const toggleActiveTab = (tab: ActiveTab) => {
         if (activeTab === tab) {
-        // kliknięcie drugi raz → wyłączamy + resetujemy wartości
+        // clicking the same tab resets to default
         setActiveTab("discover");
         setSearchTerm("");
         setSelectedCategory("");
         } else {
         setActiveTab(tab);
-        // jak przełączamy między zakładkami, też czyścimy
+        // clear values when switching tabs
         if (tab !== "search") setSearchTerm("");
         if (tab !== "filter") setSelectedCategory("");
         }

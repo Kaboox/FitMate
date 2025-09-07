@@ -9,6 +9,7 @@ public class ExerciseRequest {
     private String imageUrl;
     private Long primaryMuscleId;
     private List<Long> secondaryMuscleIds;
+    private List<String> mistakes;
 
     // gettery + settery
 
@@ -34,6 +35,10 @@ public class ExerciseRequest {
         return secondaryMuscleIds;
     }
 
+    public List<String> getMistakes() {
+        return mistakes;
+    }
+
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
     }
@@ -53,5 +58,9 @@ public class ExerciseRequest {
 
     public void setSecondaryMuscleIds(List<Long> secondaryMuscleIds) {
         this.secondaryMuscleIds = secondaryMuscleIds;
+    }
+
+    public void setMistakes(List<String> mistakes) {
+        this.mistakes = mistakes;
     }
 }

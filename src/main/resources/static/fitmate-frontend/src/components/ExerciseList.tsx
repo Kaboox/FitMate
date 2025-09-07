@@ -12,7 +12,7 @@ export default function ExerciseList() {
     fetch("http://localhost:8080/exercises")
       .then((res) => res.json())
       .then((data) => setExercises(data))
-      .catch((err) => console.log("Błąd przy pobieraniu danych", err));
+      .catch((err) => console.log("Error while fetching data", err));
   }, [])
 
   const filtered = exercises.filter((ex) => {
@@ -38,7 +38,7 @@ export default function ExerciseList() {
       {activeTab === "search" && (
         <div>
         <input type="text" 
-          placeholder="Szukaj ćwiczenia..."
+          placeholder="Search exercises..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full p-2 rounded-md bg-neutral-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -56,7 +56,7 @@ export default function ExerciseList() {
                  focus:outline-none focus:ring-2 focus:ring-green-500
                  border border-neutral-700"
           >
-            <option value="">Wszystkie</option>
+            <option value="">All</option>
             <option value="Chest">Chest</option>
             <option value="Back">Back</option>
             <option value="Arms">Arms</option>

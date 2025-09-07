@@ -1,5 +1,6 @@
 import React, { use, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Undo } from "lucide-react";
 
 interface Muscle {
   id: number;
@@ -15,34 +16,32 @@ interface Exercise {
   imageUrl: string;
   primaryMuscle: Muscle;
   secondaryMuscles: Muscle[];
+  mistakes: string[];
 }
 
 export default function ExerciseDetail() {
-    const {id} = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
 
-    const [exerciseData, setExerciseData] = useState<Exercise | null>(null);
+  const [exerciseData, setExerciseData] = useState<Exercise | null>(null);
 
+  useEffect(() => {
+    if (!id) return;
 
-    useEffect(() => {
-        if (!id) return;
+    fetch(`http://localhost:8080/exercises/${id}`)
+      .then((response) => response.json())
+      .then((data) => setExerciseData(data))
+      .catch((error) => console.error("Error fetching exercise data:", error));
+    document.title = "Exercise Details - FitMate";
+  }, []);
 
-        fetch(`http://localhost:8080/exercises/${id}`)
-            .then(response => response.json())
-            .then(data => setExerciseData(data))
-            .catch(error => console.error('Error fetching exercise data:', error));
-        document.title = "Exercise Details - FitMate";
-    }, []);
-
-    if (!exerciseData) {
+  if (!exerciseData) {
     return (
       <div className="flex items-center justify-center min-h-screen text-white">
         Loading exercise...
       </div>
     );
   }
-
-
-  
 
   return (
     <div className="flex flex-col items-center bg-neutral-900 min-h-screen text-white">
@@ -53,9 +52,24 @@ export default function ExerciseDetail() {
           alt={exerciseData.name}
           className="w-full h-full object-cover"
         />
+        <div>
+          
+<p
+  className="absolute top-4 left-4 flex items-center gap-2 text-xl md:text-2xl font-mono text-white cursor-pointer hover:text-green-400 transition"
+  style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.8)" }}
+  onClick={() => navigate(-1)}
+>
+  <Undo size={24} />
+  FitMate
+</p>
+        </div>
         <div className="absolute bottom-4 left-6 bg-black bg-opacity-60 px-4 py-2 rounded-lg">
-          <h1 className="text-3xl md:text-5xl font-bold">{exerciseData.name}</h1>
-          <h3 className="text-xl md:text-2xl font-bold">{exerciseData.primaryMuscle.category}</h3>
+          <h1 className="text-3xl md:text-5xl font-bold">
+            {exerciseData.name}
+          </h1>
+          <h3 className="text-xl md:text-2xl font-bold">
+            {exerciseData.primaryMuscle.category}
+          </h3>
         </div>
       </div>
 
@@ -78,9 +92,9 @@ export default function ExerciseDetail() {
 
         <h3 className="text-xl font-semibold mt-6">Common mistakes</h3>
         <ul className="list-disc list-inside text-gray-400">
-          {/* {exerciseData.mistakes.map((m, idx) => (
+          {exerciseData.mistakes.map((m, idx) => (
             <li key={idx}>{m}</li>
-          ))} */}
+          ))}
         </ul>
       </div>
 

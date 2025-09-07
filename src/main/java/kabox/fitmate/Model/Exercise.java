@@ -29,6 +29,9 @@ public class Exercise {
     )
     private List<Muscle> secondaryMuscles;
 
+    @ElementCollection
+    private List<String> mistakes;
+
 
     public Long getId() { return id; }
     public String getName() { return name; }
@@ -37,6 +40,7 @@ public class Exercise {
     public String getImageUrl() { return imageUrl; }
     public Muscle getPrimaryMuscle() { return primaryMuscle; }
     public List<Muscle> getSecondaryMuscles() { return secondaryMuscles; }
+    public List<String> getMistakes() {return mistakes;}
 
     public void setId(Long id) { this.id = id; }
     public void setName(String name) { this.name = name; }
@@ -45,4 +49,8 @@ public class Exercise {
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
     public void setPrimaryMuscle(Muscle primaryMuscle) { this.primaryMuscle = primaryMuscle; }
     public void setSecondaryMuscles(List<Muscle> secondaryMuscles) { this.secondaryMuscles = secondaryMuscles; }
+
+    public void setMistakes(List<String> mistakes) {
+        this.mistakes = mistakes;
+    }
 }
