@@ -9,13 +9,56 @@ export default function Register() {
     confirmPassword: "",
   });
 
+  const clearInputs = () => {
+    setForm({
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add registration logic here
+    
+    if (form.password !== form.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8080/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: form.email,
+          password: form.password,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(`Registration failed: ${errorData.message || 'Unknown error'}`);
+        console.error("Registration error:", errorData);
+        clearInputs();
+        return;
+      }
+
+      const data = await response.json();
+      console.log("Registration successful:", data);
+      // Optionally, redirect to login or another page
+    } catch (error) {
+      console.error("Error during registration:", error);
+      alert("An error occurred. Please try again.");
+    }
+
+    clearInputs();
     alert("Registration submitted!");
   };
 

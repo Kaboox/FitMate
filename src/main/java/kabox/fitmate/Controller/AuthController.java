@@ -21,42 +21,23 @@ import java.util.Map;
 public class AuthController {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
-    private final JwtService jwtService;
 
-    @Autowired
-    public AuthController(UserService userService,
-                          PasswordEncoder passwordEncoder,
-                          UserRepository userRepository, JwtService jwtService) {
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-        this.jwtService = jwtService;
-    }
+   public AuthController(UserService userService) {
+       this.userService = userService;
+   }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserRegisterRequest request) {
+    public ResponseEntity<?> registerUser(@RequestBody UserRegisterRequest request) {
         User newUser = userService.registerUser(request);
         return ResponseEntity.ok(newUser);
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginRequest request) {
-        return userRepository.findByEmail(request.getEmail())
-                .map(user -> {
-                    if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-                        String token = jwtService.generateToken(user.getEmail());
-                        return ResponseEntity.ok(Map.of(
-                                "token", token,
-                                "email", user.getEmail(),
-                                "name", user.getName(),
-                                "role", user.getRole()
-                        ));
-                    } else {
-                        return ResponseEntity.status(401).body("Invalid credentials");
-                    }
-                })
-                .orElse(ResponseEntity.status(401).body("User not found"));
+       String token = userService.login(request);
+       return ResponseEntity.ok(Map.of(
+               "token", token,
+               "email", request.getEmail()
+       ));
     }
 }

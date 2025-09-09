@@ -11,9 +11,54 @@ export default function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add login logic here
+    
+    if (!form.email.trim() || !form.password.trim()) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8080/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: form.email,
+          password: form.password,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(`Login failed: ${errorData.message || 'Unknown error'}`);
+        console.error("Login error:", errorData);
+        return;
+      }
+
+      const data = await response.json();
+      console.log("Login successful:", data);
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify({
+        email: data.email,
+        name: data.name,
+        role: data.role,
+      }))
+    
+      window.location.href = "/";
+
+
+    }
+    catch (error) {
+      console.error("Error during login:", error);
+      alert("An error occurred. Please try again.");
+    }
+
     alert("Login submitted!");
   };
 
