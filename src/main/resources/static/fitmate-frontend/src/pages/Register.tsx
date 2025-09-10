@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -9,6 +10,9 @@ export default function Register() {
     confirmPassword: "",
   });
 
+  const { register } = useAuth();
+
+  // Function to clear input fields
   const clearInputs = () => {
     setForm({
       username: "",
@@ -30,34 +34,14 @@ export default function Register() {
       return;
     }
 
-    try {
-      const response = await fetch("http://localhost:8080/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: form.email,
-          password: form.password,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        alert(`Registration failed: ${errorData.message || 'Unknown error'}`);
-        console.error("Registration error:", errorData);
-        clearInputs();
-        return;
-      }
-
-      const data = await response.json();
-      console.log("Registration successful:", data);
-      // Optionally, redirect to login or another page
-    } catch (error) {
-      console.error("Error during registration:", error);
-      alert("An error occurred. Please try again.");
+    if (!form.email.trim() || !form.password.trim() || !form.username.trim()) {
+      alert("Please fill in all fields.");
+      return;
     }
 
+    await register(form.username, form.email, form.password);
+
+    
     clearInputs();
     alert("Registration submitted!");
   };

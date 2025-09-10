@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+
+  const { login } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -21,45 +24,8 @@ export default function Login() {
       return;
     }
 
-    try {
-      const response = await fetch("http://localhost:8080/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: form.email,
-          password: form.password,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        alert(`Login failed: ${errorData.message || 'Unknown error'}`);
-        console.error("Login error:", errorData);
-        return;
-      }
-
-      const data = await response.json();
-      console.log("Login successful:", data);
-
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify({
-        email: data.email,
-        name: data.name,
-        role: data.role,
-      }))
+    await login(form.email, form.password);
     
-      window.location.href = "/";
-
-
-    }
-    catch (error) {
-      console.error("Error during login:", error);
-      alert("An error occurred. Please try again.");
-    }
-
-    alert("Login submitted!");
   };
 
   return (

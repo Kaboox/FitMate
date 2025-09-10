@@ -1,7 +1,15 @@
-import { ListFilter, Search, Star, Flame, LogIn } from "lucide-react";
+import {
+  ListFilter,
+  Search,
+  Star,
+  Flame,
+  LogIn,
+  LogOut,
+  User,
+} from "lucide-react";
 import { useNavbar } from "../context/NavbarContext";
 import { Link } from "react-router-dom";
-
+import { useAuth } from "../context/AuthContext";
 
 const navItems = [
   { id: "search", icon: <Search size={24} />, label: "Discover" },
@@ -11,14 +19,13 @@ const navItems = [
 ] as const;
 
 export default function NavbarDesktop() {
-  const { activeTab, setActiveTab, toggleActiveTab } = useNavbar()
+  const { activeTab, setActiveTab, toggleActiveTab } = useNavbar();
+  const { user, logout } = useAuth();
 
   return (
     <div className="flex flex-col justify-between items-center gap-8 w-full h-screen sticky top-0 py-10 bg-neutral-800 rounded-md">
-    
       <h1 className="text-xl font-mono text-white">FitMate</h1>
 
-      
       <div className="flex flex-col gap-8">
         {navItems.map((item) => (
           <div
@@ -35,14 +42,32 @@ export default function NavbarDesktop() {
         ))}
       </div>
 
-      <div className="">
-        <Link to="/register" className="p-2 hover:text-green-500 transition text-white">
-          <LogIn size={24} />
+      {!user && (
+        <Link to="/login" title="Login">
+          <div className="p-2 rounded-xl cursor-pointer text-white hover:text-green-300 transition">
+            <LogIn size={24} />
+          </div>
         </Link>
-      </div>
+      )}
 
-      {/* Hidden for now (when logged in) */}
-      <div className="hidden">{/* logged-in options */}</div>
+      {user && (
+        <div className="p-2 flex flex-col gap-8 justify-center items-center rounded-xl text-white">
+          <User
+            size={24}
+            className="hover:text-green-300 transition cursor-pointer"
+          />
+          <LogOut
+            size={24}
+            className="hover:text-green-300 transition cursor-pointer"
+            onClick={() => {
+              if (confirm("Are you sure you want to log out?")) {
+                window.location.href = "/login";
+                logout();
+              }
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

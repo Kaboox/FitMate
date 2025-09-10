@@ -4,17 +4,20 @@ import Discover from "./pages/Discover";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import ExerciseDetails from "./pages/ExerciseDetails";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
-    <NavbarProvider>
-      <Routes>
-        <Route path="/" element={<Discover />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/exercise/:id" element={<ExerciseDetails/>} />
-      </Routes>
-    </NavbarProvider>
+    <AuthProvider>
+      <NavbarProvider>
+        <Routes>
+          <Route path="/" element={<Discover />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/exercise/:id" element={<ExerciseDetails />} />
+        </Routes>
+      </NavbarProvider>
+    </AuthProvider>
   );
 }
 
