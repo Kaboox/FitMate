@@ -52,10 +52,12 @@ export default function NavbarDesktop() {
 
       {user && (
         <div className="p-2 flex flex-col gap-8 justify-center items-center rounded-xl text-white">
-          <User
-            size={24}
-            className="hover:text-green-300 transition cursor-pointer"
-          />
+          <Link to="/profile" title="Profile">
+            <User
+              size={24}
+              className="hover:text-green-300 transition cursor-pointer"
+            />
+          </Link>
           <LogOut
             size={24}
             className="hover:text-green-300 transition cursor-pointer"

@@ -5,6 +5,7 @@ import kabox.fitmate.Model.User;
 import kabox.fitmate.Repository.UserRepository;
 import kabox.fitmate.dto.UserLoginRequest;
 import kabox.fitmate.dto.UserRegisterRequest;
+import kabox.fitmate.dto.UserUpdateRequest;
 import kabox.fitmate.exception.EmailAlreadyExistsException;
 import kabox.fitmate.exception.InvalidCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class UserService {
 
         User user = new User();
         user.setEmail(request.getEmail());
-        user.setName(request.getName());
+        user.setUsername(request.getName());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.USER);
 
@@ -52,6 +53,18 @@ public class UserService {
 
         return jwtService.generateToken(user.getEmail());
     }
+
+    public void updateUserProfile(String email, UserUpdateRequest request) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (request.getUsername() != null) user.setUsername(request.getUsername());
+        if (request.getPassword() != null) user.setPassword(passwordEncoder.encode(request.getPassword()));
+        if (request.getAvatarUrl() != null) user.setAvatarUrl(request.getAvatarUrl());
+
+        userRepository.save(user);
+    }
+
 
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);

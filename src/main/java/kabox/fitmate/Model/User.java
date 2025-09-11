@@ -18,10 +18,12 @@ public class User {
 
     @JsonIgnore
     private String password;
-    private String name;
+    private String username;
 
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER; // ADMIN / USER / PREMIUM
+
+    private String avatarUrl;
 
     @OneToMany(mappedBy = "user")
     private List<WorkoutPlan> workoutPlans;
@@ -34,12 +36,12 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String name) {
+        this.username = username;
     }
 
     public Role getRole() {
@@ -64,6 +66,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public List<WorkoutPlan> getWorkoutPlans() {

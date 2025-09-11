@@ -54,6 +54,15 @@ export default function Register() {
       >
         <h2 className="text-2xl font-bold text-white mb-4 text-center">Create Account</h2>
         <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={form.username}
+          onChange={handleChange}
+          className="p-2 rounded bg-neutral-700 text-white focus:outline-none"
+          required
+        />
+        <input
           type="email"
           name="email"
           placeholder="Email"

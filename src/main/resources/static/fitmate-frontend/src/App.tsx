@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import ExerciseDetails from "./pages/ExerciseDetails";
 import { AuthProvider } from "./context/AuthContext";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/exercise/:id" element={<ExerciseDetails />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </NavbarProvider>
     </AuthProvider>

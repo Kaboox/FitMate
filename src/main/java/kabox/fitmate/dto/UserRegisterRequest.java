@@ -5,7 +5,7 @@ import kabox.fitmate.Model.Role;
 public class UserRegisterRequest {
     private String email;
     private String password;
-    private String name;
+    private String username;
 
 
     public UserRegisterRequest() {}
@@ -21,11 +21,11 @@ public class UserRegisterRequest {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.username = name;
     }
 
     public String getEmail() { return email; }
-    public String getName() { return name; }
+    public String getName() { return username; }
 
     public String getPassword() {
         return password;
