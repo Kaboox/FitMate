@@ -23,7 +23,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER; // ADMIN / USER / PREMIUM
 
+    @Column(name = "avatar_url")
     private String avatarUrl;
+
 
     @OneToMany(mappedBy = "user")
     private List<WorkoutPlan> workoutPlans;

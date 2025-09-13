@@ -1,6 +1,7 @@
 package kabox.fitmate.dto;
 
 import kabox.fitmate.Model.Role;
+import kabox.fitmate.Model.User;
 
 public class UserResponse {
     private Long id;
@@ -9,12 +10,12 @@ public class UserResponse {
     private Role role;
     private String avatarUrl;
 
-    public UserResponse(Long id, String email, String name, Role role, String avatarUrl) {
-        this.id = id;
-        this.email = email;
-        this.username = name;
-        this.role = role;
-        this.avatarUrl = avatarUrl;
+    public UserResponse(User user) {
+        this.id = user.getId();
+        this.email = user.getEmail();
+        this.username = user.getUsername();
+        this.role = user.getRole();
+        this.avatarUrl = "/users/" + user.getId() + "/avatar";
     }
 
     public Long getId() { return id; }
