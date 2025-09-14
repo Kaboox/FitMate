@@ -15,7 +15,7 @@ public class UserResponse {
         this.email = user.getEmail();
         this.username = user.getUsername();
         this.role = user.getRole();
-        this.avatarUrl = "/users/" + user.getId() + "/avatar";
+        this.avatarUrl = user.getAvatarUrl();
     }
 
     public Long getId() { return id; }

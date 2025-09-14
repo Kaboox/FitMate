@@ -1,5 +1,6 @@
 package kabox.fitmate.service;
 
+import jakarta.transaction.Transactional;
 import kabox.fitmate.Model.Role;
 import kabox.fitmate.Model.User;
 import kabox.fitmate.Repository.UserRepository;
@@ -54,15 +55,26 @@ public class UserService {
         return jwtService.generateToken(user.getEmail());
     }
 
+    @Transactional
     public void updateUserProfile(String email, UserUpdateRequest request) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (request.getUsername() != null) user.setUsername(request.getUsername());
-        if (request.getPassword() != null) user.setPassword(passwordEncoder.encode(request.getPassword()));
-        if (request.getAvatarUrl() != null) user.setAvatarUrl(request.getAvatarUrl());
 
-        userRepository.save(user);
+        if (request.getUsername() != null && !request.getUsername().isBlank()) {
+            user.setUsername(request.getUsername());
+        }
+
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
+        if (request.getAvatarUrl() != null && !request.getAvatarUrl().isBlank()) {
+            user.setAvatarUrl(request.getAvatarUrl());
+        }
+
+        User saved = userRepository.save(user);
+        System.out.println("User saved: " + saved.getUsername());
     }
 
 

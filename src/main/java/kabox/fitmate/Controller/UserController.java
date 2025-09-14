@@ -96,11 +96,17 @@ public class UserController {
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<?> updateProfile(@RequestBody UserUpdateRequest request,
-                                           @AuthenticationPrincipal String userEmail) {
+    public ResponseEntity<?> updateProfile(
+            @RequestBody UserUpdateRequest request,
+            @AuthenticationPrincipal(expression = "username") String userEmail) {
+
+        System.out.println("UpdateProfile request: " + request.getUsername() + " | " + request.getPassword() + " | " + request.getAvatarUrl());
+        System.out.println("From token email: " + userEmail);
+
         userService.updateUserProfile(userEmail, request);
         return ResponseEntity.ok(Map.of("message", "Profile updated"));
     }
+
 
     @PutMapping("/avatar")
     public ResponseEntity<UserResponse> uploadAvatar(
