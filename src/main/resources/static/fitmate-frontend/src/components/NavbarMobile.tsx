@@ -1,6 +1,18 @@
 import { useState } from "react";
-import { Menu, X, Search, Star, Flame, ListFilter } from "lucide-react";
+import {
+  Menu,
+  X,
+  Search,
+  Star,
+  Flame,
+  ListFilter,
+  User,
+  LogOut,
+  LogIn,
+} from "lucide-react";
 import { useNavbar } from "../context/NavbarContext";
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const navItems = [
   { id: "search", icon: <Search size={24} />, label: "Discover" },
@@ -9,14 +21,13 @@ const navItems = [
   { id: "trending", icon: <Flame size={24} />, label: "Trending" },
 ] as const;
 
-type ActiveTab = typeof navItems[number]["id"]; 
-
 export default function NavbarMobile() {
   const [isOpen, setIsOpen] = useState(false);
   const { activeTab, setActiveTab, toggleActiveTab } = useNavbar();
+  const { user, logout } = useAuth();
 
-   const handleClick = (option: ActiveTab) => {
-    toggleActiveTab(option)  
+  const handleClick = (option: string) => {
+    toggleActiveTab(option);
     setIsOpen(false);
   };
 
@@ -44,7 +55,7 @@ export default function NavbarMobile() {
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        {/* Header w menu */}
+        {/* Header */}
         <div className="flex justify-between items-center px-4 py-3 border-b border-neutral-700">
           <h2 className="text-lg text-white font-mono">Menu</h2>
           <button onClick={() => setIsOpen(false)} className="text-white">
@@ -57,13 +68,52 @@ export default function NavbarMobile() {
           {navItems.map((item) => (
             <div
               key={item.id}
-              onClick={() => handleClick(item.id)} // zamyka menu po kliknięciu
-              className={`p-2 cursor-pointer flex gap-2 items-center ${activeTab === item.id ? "text-green-400" : "text-white"}`}
+              onClick={() => handleClick(item.id)}
+              className={`p-2 cursor-pointer flex gap-2 items-center ${
+                activeTab === item.id ? "text-green-400" : "text-white"
+              }`}
             >
               {item.icon}
               <span className="text-sm">{item.label}</span>
             </div>
           ))}
+
+          {/* Auth-related items */}
+          <div className="border-t border-neutral-700 w-full pt-6 flex flex-col items-center gap-6">
+            {user ? (
+              <>
+                <Link
+                  to="/profile"
+                  onClick={() => setIsOpen(false)}
+                  className={`p-2 cursor-pointer flex gap-2 items-center ${
+                    activeTab === "profile" ? "text-green-400" : "text-white"
+                  }`}
+                >
+                  <User size={24} />
+                  <span className="text-sm">Profile</span>
+                </Link>
+                <div
+                  onClick={() => {
+                    logout();
+                    setIsOpen(false);
+                  }}
+                  className="p-2 cursor-pointer flex gap-2 items-center text-white hover:text-red-400"
+                >
+                  <LogOut size={24} />
+                  <span className="text-sm">Logout</span>
+                </div>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setIsOpen(false)}
+                className="p-2 cursor-pointer flex gap-2 items-center text-white"
+              >
+                <LogIn size={24} />
+                <span className="text-sm">Login</span>
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </div>
