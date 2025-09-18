@@ -3,7 +3,6 @@ package kabox.fitmate.Controller;
 import jakarta.servlet.http.HttpServletRequest;
 import kabox.fitmate.Model.User;
 import kabox.fitmate.Repository.UserRepository;
-import kabox.fitmate.dto.UserRegisterRequest;
 import kabox.fitmate.dto.UserResponse;
 import kabox.fitmate.dto.UserUpdateRequest;
 import kabox.fitmate.security.CustomUserDetails;
@@ -14,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -67,6 +64,8 @@ public class UserController {
                 : ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).build().toUriString() + avatar;
         return ResponseEntity.ok(new UserResponse(u));
     }
+
+
 
     @GetMapping("/{id}/avatar")
     public ResponseEntity<String> getAvatar(@PathVariable Long id) {

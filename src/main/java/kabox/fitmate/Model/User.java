@@ -3,7 +3,9 @@ package kabox.fitmate.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -29,6 +31,14 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<WorkoutPlan> workoutPlans;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorite_exercises",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "exercise_id")
+    )
+    private Set<Exercise> favoriteExercises = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -84,5 +94,13 @@ public class User {
 
     public void setWorkoutPlans(List<WorkoutPlan> workoutPlans) {
         this.workoutPlans = workoutPlans;
+    }
+
+    public Set<Exercise> getFavoriteExercises() {
+        return favoriteExercises;
+    }
+
+    public void setFavoriteExercises(Set<Exercise> favoriteExercises) {
+        this.favoriteExercises = favoriteExercises;
     }
 }
