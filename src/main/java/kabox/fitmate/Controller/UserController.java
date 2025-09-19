@@ -57,11 +57,20 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<UserResponse> me(@AuthenticationPrincipal CustomUserDetails userDetails,
                                            HttpServletRequest request) {
-        if (userDetails == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        User u = userDetails.getUser();
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        User u = userRepository.findById(userDetails.getUser().getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         String avatar = u.getAvatarUrl();
         String full = avatar == null ? null
-                : ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).build().toUriString() + avatar;
+                : ServletUriComponentsBuilder.fromRequestUri(request)
+                .replacePath(null)
+                .build()
+                .toUriString() + avatar;
+
         return ResponseEntity.ok(new UserResponse(u));
     }
 

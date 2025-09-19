@@ -12,7 +12,7 @@ public class UserResponse {
     private String username;
     private Role role;
     private String avatarUrl;
-    private Set<Long> favoriteExerciseIds;
+    private Set<Long> favorites;
 
     public UserResponse(User user) {
         this.id = user.getId();
@@ -20,7 +20,7 @@ public class UserResponse {
         this.username = user.getUsername();
         this.role = user.getRole();
         this.avatarUrl = user.getAvatarUrl();
-        this.favoriteExerciseIds = user.getFavoriteExercises().stream()
+        this.favorites = user.getFavorites().stream()
                 .map(Exercise::getId)
                 .collect(Collectors.toSet());
 
@@ -34,7 +34,7 @@ public class UserResponse {
         return avatarUrl;
     }
 
-    public Set<Long> getFavoriteExerciseIds() {
-        return favoriteExerciseIds;
+    public Set<Long> getFavorites() {
+        return favorites;
     }
 }

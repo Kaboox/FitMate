@@ -38,7 +38,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "exercise_id")
     )
-    private Set<Exercise> favoriteExercises = new HashSet<>();
+    private Set<Exercise> favorites = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -96,11 +96,11 @@ public class User {
         this.workoutPlans = workoutPlans;
     }
 
-    public Set<Exercise> getFavoriteExercises() {
-        return favoriteExercises;
+    public Set<Exercise> getFavorites() {
+        return favorites;
     }
 
-    public void setFavoriteExercises(Set<Exercise> favoriteExercises) {
-        this.favoriteExercises = favoriteExercises;
+    public void setFavoriteExercises(Set<Exercise> favorites) {
+        this.favorites = favorites;
     }
 }

@@ -1,11 +1,12 @@
 package kabox.fitmate.service;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import kabox.fitmate.Model.Role;
 import kabox.fitmate.Model.User;
 import kabox.fitmate.Repository.UserRepository;
 import kabox.fitmate.dto.UserLoginRequest;
 import kabox.fitmate.dto.UserRegisterRequest;
+import kabox.fitmate.dto.UserResponse;
 import kabox.fitmate.dto.UserUpdateRequest;
 import kabox.fitmate.exception.EmailAlreadyExistsException;
 import kabox.fitmate.exception.InvalidCredentialsException;
@@ -76,6 +77,17 @@ public class UserService {
         User saved = userRepository.save(user);
         System.out.println("User saved: " + saved.getUsername());
     }
+
+    @Transactional(readOnly = true)
+    public UserResponse getCurrentUser(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.getFavorites().size();
+
+        return new UserResponse(user);
+    }
+
 
 
     public Optional<User> findByEmail(String email) {

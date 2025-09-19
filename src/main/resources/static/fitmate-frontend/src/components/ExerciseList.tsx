@@ -1,4 +1,5 @@
 import { useNavbar } from "../context/NavbarContext";
+import { useUser } from "../context/UserContext";
 import type { Exercise } from "../types/Exercise";
 import ExerciseCard from "./ExerciseCard";
 import { useEffect, useState } from "react";
@@ -6,7 +7,8 @@ import { useEffect, useState } from "react";
 
 export default function ExerciseList() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
-  const { activeTab, searchTerm, setSearchTerm, selectedCategory, setSelectedCategory, favorites } = useNavbar();
+  const { activeTab, searchTerm, setSearchTerm, selectedCategory, setSelectedCategory } = useNavbar();
+  const { user } = useUser();
 
   useEffect(() => {
     fetch("http://localhost:8080/exercises")
@@ -24,7 +26,7 @@ export default function ExerciseList() {
       selectedCategory === "" || ex.primaryMuscle?.category === selectedCategory;
 
     const matchesFavorites =
-      activeTab !== "favorites" || favorites.includes(ex.id);
+      activeTab !== "favorites" || user!.favorites.includes(ex.id);
 
 
   return matchesSearch && matchesCategory && matchesFavorites;

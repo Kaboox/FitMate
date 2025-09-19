@@ -1,6 +1,6 @@
 import { Heart } from "lucide-react";
-import { useNavbar } from "../context/NavbarContext";
 import { Link } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 
 type ExerciseCardProps = {
   id: number;
@@ -18,8 +18,9 @@ export default function ExerciseCard({
   description,
   imageUrl,
 }: ExerciseCardProps) {
-    const { favorites, toggleFavorite } = useNavbar();
-    const isFav = favorites.includes(id);
+    const {  user, toggleFavorites } = useUser();
+    console.log(user?.favorites);
+    const isFav = user?.favorites.includes(id);
 
   return (
     <div className="max-w-xl bg-neutral-800 text-white rounded-xl shadow-md p-4 flex gap-4 hover:bg-neutral-700 transition relative">
@@ -47,7 +48,7 @@ export default function ExerciseCard({
 
        {/* Heart Icon */}
       <button
-        onClick={() => toggleFavorite(id)}
+        onClick={() => toggleFavorites(id)}
         className="absolute top-2 right-2 text-red-400"
       >
         <Heart
