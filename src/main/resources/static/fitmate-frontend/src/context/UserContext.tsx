@@ -27,7 +27,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const method = user.favorites.includes(id) ? "DELETE" : "POST";
       const res = await fetch(
-        `http://localhost:8080/users/${user.id}/favorites`,
+        `http://localhost:8080/users/me/favorites{id}`,
         {
           method,
           headers: {

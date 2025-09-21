@@ -19,7 +19,6 @@ export default function ExerciseCard({
   imageUrl,
 }: ExerciseCardProps) {
     const {  user, toggleFavorites } = useUser();
-    console.log(user?.favorites);
     const isFav = user?.favorites.includes(id);
 
   return (
