@@ -1,7 +1,9 @@
 package kabox.fitmate.Controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import kabox.fitmate.Model.Exercise;
 import kabox.fitmate.Model.User;
+import kabox.fitmate.Repository.ExerciseRepository;
 import kabox.fitmate.Repository.UserRepository;
 import kabox.fitmate.dto.UserResponse;
 import kabox.fitmate.dto.UserUpdateRequest;
@@ -24,7 +26,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -33,8 +37,13 @@ public class UserController {
     private UserRepository userRepository;
 
     @Autowired
+    private ExerciseRepository exerciseRepository;
+
+    @Autowired
     private UserService userService;
     private final AvatarService avatarService;
+
+
 
     @Autowired
     public UserController(AvatarService avatarService) {
@@ -72,6 +81,35 @@ public class UserController {
                 .toUriString() + avatar;
 
         return ResponseEntity.ok(new UserResponse(u));
+    }
+
+    @GetMapping("/me/favorites")
+    public ResponseEntity<Set<Long>> getFavorites(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        User user = userDetails.getUser();
+
+        Set<Long> favoriteIds = user.getFavorites().stream().map(ex -> ex.getId()).collect(Collectors.toSet());
+        return ResponseEntity.ok(favoriteIds);
+
+    }
+
+    @PostMapping("/me/favorites/{exerciseId}")
+    public ResponseEntity<?> addFavorites(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long exerciseId) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        User user = userDetails.getUser();
+        Exercise exercise = exerciseRepository.findById(exerciseId)
+                        .orElseThrow(() -> new RuntimeException("Exercise not found"));
+
+        user.getFavorites().add(exercise);
+
+        userRepository.save(user);
+        return ResponseEntity.ok(new UserResponse(user));
     }
 
 
