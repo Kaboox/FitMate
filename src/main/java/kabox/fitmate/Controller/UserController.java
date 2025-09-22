@@ -102,7 +102,9 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        User user = userDetails.getUser();
+        // Get user from repository, not details - active session and transaction !
+        User user = userRepository.findByEmail(userDetails.getUser().getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
         Exercise exercise = exerciseRepository.findById(exerciseId)
                         .orElseThrow(() -> new RuntimeException("Exercise not found"));
 
