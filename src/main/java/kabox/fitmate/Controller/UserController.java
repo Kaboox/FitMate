@@ -102,16 +102,21 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        // Get user from repository, not details - active session and transaction !
-        User user = userRepository.findByEmail(userDetails.getUser().getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        Exercise exercise = exerciseRepository.findById(exerciseId)
-                        .orElseThrow(() -> new RuntimeException("Exercise not found"));
+        User updatedUser = userService.addFavorite(userDetails.getUser().getId(), exerciseId);
+        return ResponseEntity.ok(new UserResponse(updatedUser));
+    }
 
-        user.getFavorites().add(exercise);
+    @DeleteMapping("/me/favorites/{exerciseId}")
+    public ResponseEntity<UserResponse> removeFavorite(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable Long exerciseId) {
 
-        userRepository.save(user);
-        return ResponseEntity.ok(new UserResponse(user));
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        User updatedUser = userService.removeFavorite(userDetails.getUser().getId(), exerciseId);
+        return ResponseEntity.ok(new UserResponse(updatedUser));
     }
 
 

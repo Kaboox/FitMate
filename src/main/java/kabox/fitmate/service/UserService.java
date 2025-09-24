@@ -1,5 +1,7 @@
 package kabox.fitmate.service;
 
+import kabox.fitmate.Model.Exercise;
+import kabox.fitmate.Repository.ExerciseRepository;
 import org.springframework.transaction.annotation.Transactional;
 import kabox.fitmate.Model.Role;
 import kabox.fitmate.Model.User;
@@ -23,12 +25,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final ExerciseRepository exerciseRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, ExerciseRepository exerciseRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.exerciseRepository = exerciseRepository;
     }
 
     public User registerUser(UserRegisterRequest request) {
@@ -87,6 +91,37 @@ public class UserService {
 
         return new UserResponse(user);
     }
+
+    @Transactional
+    public User addFavorite(Long userId, Long exerciseId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Exercise exercise = exerciseRepository.findById(exerciseId)
+                .orElseThrow(() -> new RuntimeException("Exercise not found"));
+
+        if (user.getFavorites().contains(exercise)) {
+            throw new IllegalStateException("Exercise already in favorites");
+        }
+
+        user.getFavorites().add(exercise);
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    public User removeFavorite(Long userId, Long exerciseId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Exercise exercise = exerciseRepository.findById(exerciseId)
+                .orElseThrow(() -> new RuntimeException("Exercise not found"));
+
+        if (!user.getFavorites().contains(exercise)) {
+            throw new IllegalStateException("Exercise not in favorites");
+        }
+
+        user.getFavorites().remove(exercise);
+        return userRepository.save(user);
+    }
+
 
 
 
