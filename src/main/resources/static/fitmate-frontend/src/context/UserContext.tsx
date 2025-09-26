@@ -13,16 +13,34 @@ interface UserContextType {
   setUser: (user: User | null) => void;
   refreshUser: () => Promise<void>;
   toggleFavorites: (id: number) => Promise<void>;
+  getFavorites: () => number[];
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  console.log(user)
+
+  const getFavorites = () => {
+    if (user) return user.favorites;
+    return JSON.parse(localStorage.getItem("favorites") || "[]");
+  };
 
   const toggleFavorites = async (id: number) => {
-    if (!user) return;
+    // if user not logged in, use localStorage
+    if (!user) {
+      const favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+      if (favs.includes(id)) {
+        const updated = favs.filter((f: number) => f !== id);
+        localStorage.setItem("favorites", JSON.stringify(updated));
+      } else {
+        favs.push(id);
+        localStorage.setItem("favorites", JSON.stringify(favs));
+      }
+      return;
+    }
+    
+    // if user logged in, update on server
     const token = localStorage.getItem("token");
 
     try {
@@ -68,7 +86,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, refreshUser, toggleFavorites }}
+      value={{ user, setUser, refreshUser, toggleFavorites, getFavorites }}
     >
       {children}
     </UserContext.Provider>

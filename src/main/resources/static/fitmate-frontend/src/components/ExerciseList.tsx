@@ -4,18 +4,25 @@ import type { Exercise } from "../types/Exercise";
 import ExerciseCard from "./ExerciseCard";
 import { useEffect, useState } from "react";
 
-
 export default function ExerciseList() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
-  const { activeTab, searchTerm, setSearchTerm, selectedCategory, setSelectedCategory } = useNavbar();
-  const { user } = useUser();
+  const {
+    activeTab,
+    searchTerm,
+    setSearchTerm,
+    selectedCategory,
+    setSelectedCategory,
+  } = useNavbar();
+  const { getFavorites } = useUser();
+  const favorites = getFavorites();
+
 
   useEffect(() => {
     fetch("http://localhost:8080/exercises")
       .then((res) => res.json())
       .then((data) => setExercises(data))
       .catch((err) => console.log("Error while fetching data", err));
-  }, [])
+  }, []);
 
   const filtered = exercises.filter((ex) => {
     const matchesSearch =
@@ -23,29 +30,27 @@ export default function ExerciseList() {
       ex.description.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesCategory =
-      selectedCategory === "" || ex.primaryMuscle?.category === selectedCategory;
+      selectedCategory === "" ||
+      ex.primaryMuscle?.category === selectedCategory;
 
     const matchesFavorites =
-      activeTab !== "favorites" || user!.favorites.includes(ex.id);
+      activeTab !== "favorites" || favorites.includes(ex.id);
 
-
-  return matchesSearch && matchesCategory && matchesFavorites;
-});
-
-
-  
+    return matchesSearch && matchesCategory && matchesFavorites;
+  });
 
   return (
     <div className="flex flex-col gap-10 overflow-y-auto p-6">
       {activeTab === "search" && (
         <div>
-        <input type="text" 
-          placeholder="Search exercises..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full p-2 rounded-md bg-neutral-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-        />
-      </div>
+          <input
+            type="text"
+            placeholder="Search exercises..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full p-2 rounded-md bg-neutral-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+        </div>
       )}
       {activeTab === "filter" && (
         <div>
@@ -83,5 +88,5 @@ export default function ExerciseList() {
         ))}
       </div>
     </div>
-  )
+  );
 }
