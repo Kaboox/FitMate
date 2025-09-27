@@ -18,8 +18,10 @@ export default function ExerciseCard({
   description,
   imageUrl,
 }: ExerciseCardProps) {
-    const {  user, toggleFavorites } = useUser();
-    const isFav = user?.favorites.includes(id);
+    const { toggleFavorites } = useUser();
+    const { getFavorites } = useUser();
+    const favorites = getFavorites();
+    const isFav = favorites.includes(id);
 
   return (
     <div className="max-w-xl bg-neutral-800 text-white rounded-xl shadow-md p-4 flex gap-4 hover:bg-neutral-700 transition relative">

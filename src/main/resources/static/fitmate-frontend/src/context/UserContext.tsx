@@ -20,23 +20,28 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [localFavorites, setLocalFavorites] = useState<number[]>(() => {
+    return JSON.parse(localStorage.getItem("favorites") || "[]");
+  });
 
   const getFavorites = () => {
     if (user) return user.favorites;
-    return JSON.parse(localStorage.getItem("favorites") || "[]");
+    return localFavorites;
   };
 
   const toggleFavorites = async (id: number) => {
     // if user not logged in, use localStorage
     if (!user) {
-      const favs = JSON.parse(localStorage.getItem("favorites") || "[]");
-      if (favs.includes(id)) {
-        const updated = favs.filter((f: number) => f !== id);
+      setLocalFavorites((prev) => {
+        let updated;
+        if (prev.includes(id)) {
+          updated = prev.filter((favId) => favId !== id);
+        } else {
+          updated = [...prev, id];
+        }
         localStorage.setItem("favorites", JSON.stringify(updated));
-      } else {
-        favs.push(id);
-        localStorage.setItem("favorites", JSON.stringify(favs));
-      }
+        return updated;
+      })
       return;
     }
     
