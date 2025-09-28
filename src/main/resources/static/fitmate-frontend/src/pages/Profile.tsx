@@ -1,15 +1,10 @@
 import { Undo } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-
-interface UserProfile {
-  username: string;
-  email: string;
-  avatarUrl?: string;
-}
+import { useUser } from "../context/UserContext";
 
 export default function Profile() {
-  const [user, setUser] = useState<UserProfile | null>(null);
+  const { user, setUser, refreshUser } = useUser();
   const [form, setForm] = useState({
     username: "",
     password: "",
@@ -19,6 +14,8 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  
 
   const token = localStorage.getItem("token");
 
@@ -52,8 +49,11 @@ export default function Profile() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+
+  // Modifying profile details
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    let passwordChange = 0;
     if (!token) return;
 
     const payload: any = {};
@@ -64,6 +64,7 @@ export default function Profile() {
         return;
       }
       payload.password = form.password;
+      passwordChange = 1;
     }
     if (form.avatarUrl.trim()) payload.avatarUrl = form.avatarUrl.trim();
 
@@ -82,6 +83,14 @@ export default function Profile() {
       const updated = await res.json();
       setUser(updated);
       alert("Profile updated!");
+      if (passwordChange) {
+        alert("Password changed, please log in again.");
+        localStorage.removeItem("token");
+        setUser(null);
+        window.location.href = "/login";
+      } else {
+        refreshUser();
+      }
     } catch (error) {
       console.error(error);
       alert("Error updating profile");
