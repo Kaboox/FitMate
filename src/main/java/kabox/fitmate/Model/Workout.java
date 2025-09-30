@@ -7,7 +7,8 @@ import java.util.List;
 
 
 @Entity
-public class WorkoutPlan {
+public class Workout {
+    // We can introduce type to our workouts so that later we can track progression of certain types of workouts - track upper days with other upper days etc..
 
     @Id
     @GeneratedValue

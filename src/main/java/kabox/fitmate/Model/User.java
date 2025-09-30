@@ -30,7 +30,7 @@ public class User {
 
 
     @OneToMany(mappedBy = "user")
-    private List<WorkoutPlan> workoutPlans;
+    private List<Workout> workouts;
 
     @ManyToMany
     @JoinTable(
@@ -88,12 +88,12 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
-    public List<WorkoutPlan> getWorkoutPlans() {
-        return workoutPlans;
+    public List<Workout> getWorkoutPlans() {
+        return workouts;
     }
 
-    public void setWorkoutPlans(List<WorkoutPlan> workoutPlans) {
-        this.workoutPlans = workoutPlans;
+    public void setWorkoutPlans(List<Workout> workouts) {
+        this.workouts = workouts;
     }
 
     public Set<Exercise> getFavorites() {

@@ -36,25 +36,25 @@ public class WorkoutPlanController {
 
     // Get all plans of logged user
     @GetMapping
-    public List<WorkoutPlan> workoutPlanList() {
+    public List<Workout> workoutPlanList() {
         return workoutPlanRepository.findAll();
     }
 
     // Get details of a specific workout plan
     @GetMapping("/{id}")
-    public ResponseEntity<WorkoutPlan> getMuscleById(@PathVariable Long id) {
-        WorkoutPlan workoutPlan = workoutPlanRepository.findById(id)
+    public ResponseEntity<Workout> getMuscleById(@PathVariable Long id) {
+        Workout workout = workoutPlanRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Muscle not found"));
 
-        return ResponseEntity.ok(workoutPlan);
+        return ResponseEntity.ok(workout);
     }
 
     @PostMapping
-    public ResponseEntity<WorkoutPlan> addWorkoutPlan(@RequestBody WorkoutPlanRequest request) {
+    public ResponseEntity<Workout> addWorkoutPlan(@RequestBody WorkoutPlanRequest request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-        WorkoutPlan plan = new WorkoutPlan();
+        Workout plan = new Workout();
         plan.setName(request.getName());
         plan.setUser(user);
 
@@ -82,7 +82,7 @@ public class WorkoutPlanController {
 
         plan.setExercises(exercises);
 
-        WorkoutPlan savedPlan = workoutPlanRepository.save(plan); // zapis planu i ćwiczeń dzięki CascadeType.ALL
+        Workout savedPlan = workoutPlanRepository.save(plan); // zapis planu i ćwiczeń dzięki CascadeType.ALL
 
         return ResponseEntity.ok(savedPlan);
 
@@ -90,14 +90,14 @@ public class WorkoutPlanController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateWorkoutPlan(@PathVariable Long id, @RequestBody WorkoutPlan updateWorkoutPlan) {
+    public ResponseEntity<?> updateWorkoutPlan(@PathVariable Long id, @RequestBody Workout updateWorkout) {
         return workoutPlanRepository.findById(id)
                 .map(existingWorkoutPlan -> {
-                    if (updateWorkoutPlan.getName() != null && !updateWorkoutPlan.getName().isBlank()) {
-                        existingWorkoutPlan.setName(updateWorkoutPlan.getName());
+                    if (updateWorkout.getName() != null && !updateWorkout.getName().isBlank()) {
+                        existingWorkoutPlan.setName(updateWorkout.getName());
                     }
 
-                    WorkoutPlan saved = workoutPlanRepository.save(existingWorkoutPlan);
+                    Workout saved = workoutPlanRepository.save(existingWorkoutPlan);
 
                     return ResponseEntity.ok(saved);
                 })

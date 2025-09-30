@@ -3,7 +3,7 @@ package kabox.fitmate.Controller;
 import jakarta.persistence.EntityNotFoundException;
 import kabox.fitmate.Model.Exercise;
 import kabox.fitmate.Model.WorkoutExercise;
-import kabox.fitmate.Model.WorkoutPlan;
+import kabox.fitmate.Model.Workout;
 import kabox.fitmate.Repository.ExerciseRepository;
 import kabox.fitmate.Repository.WorkoutExerciseRepository;
 import kabox.fitmate.Repository.WorkoutPlanRepository;
@@ -30,7 +30,7 @@ public class WorkoutExerciseController {
             @RequestParam Long exerciseId,
             @RequestBody WorkoutExercise workoutExercise) {
 
-        WorkoutPlan plan = workoutPlanRepository.findById(planId)
+        Workout plan = workoutPlanRepository.findById(planId)
                 .orElseThrow(() -> new EntityNotFoundException("Plan not found"));
 
         Exercise exercise = exerciseRepository.findById(exerciseId)
