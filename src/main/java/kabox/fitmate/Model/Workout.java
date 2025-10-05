@@ -20,7 +20,7 @@ public class Workout {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "workoutPlan", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WorkoutExercise> exercises = new ArrayList<>();
     public Long getId() {
         return id;

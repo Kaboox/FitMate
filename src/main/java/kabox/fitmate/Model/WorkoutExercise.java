@@ -12,7 +12,7 @@ public class WorkoutExercise {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "workout_plan_id")
+    @JoinColumn(name = "workout_id")
     private Workout workout;
 
     @ManyToOne
