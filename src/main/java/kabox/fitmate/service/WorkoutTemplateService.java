@@ -36,7 +36,10 @@ public class WorkoutTemplateService {
         }
         User user = optionalUser.get();
 
-        // CREATE TEMPLATE
+        if (workoutTemplateRequest.getName() == null || workoutTemplateRequest.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Workout template name must not be empty");
+        }
+
 
     }
 
