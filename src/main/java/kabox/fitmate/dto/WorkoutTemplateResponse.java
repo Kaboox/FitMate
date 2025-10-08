@@ -1,5 +1,7 @@
 package kabox.fitmate.dto;
 
+import kabox.fitmate.Model.WorkoutTemplate;
+
 import java.util.List;
 
 public class WorkoutTemplateResponse {
@@ -8,6 +10,12 @@ public class WorkoutTemplateResponse {
     private String description;
 
     private List<WorkoutTemplateExerciseResponse> exercises;
+
+    public WorkoutTemplateResponse(WorkoutTemplate workoutTemplate) {
+    }
+
+    public WorkoutTemplateResponse(Long id, String name, String description, int size) {
+    }
 
     public Long getId() {
         return id;
