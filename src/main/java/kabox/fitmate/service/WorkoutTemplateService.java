@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -56,18 +57,23 @@ public class WorkoutTemplateService {
             workoutTemplate.setDescription(workoutTemplateRequest.getDescription());
         }
 
+        List<WorkoutTemplateExercise> exerciseEntities = new ArrayList<>();
+
         for (WorkoutTemplateExerciseRequest exerciseRequest : workoutTemplateRequest.getExercises()) {
             Exercise exerciseEntity = exerciseRepository.findById(exerciseRequest.getExerciseId())
                     .orElseThrow(() -> new IllegalArgumentException(
                             "Exercise with ID " + exerciseRequest.getExerciseId() + " not found"));
 
-            WorkoutTemplateExercise exercise = new WorkoutTemplateExercise();
-            exercise.setWorkoutTemplate(workoutTemplate);
-            exercise.setExercise(exerciseEntity);
-            exercise.setSets(exerciseRequest.getSets());
-            exercise.setReps(exerciseRequest.getReps());
+            WorkoutTemplateExercise templateExercise = new WorkoutTemplateExercise();
+            templateExercise.setWorkoutTemplate(workoutTemplate);
+            templateExercise.setExercise(exerciseEntity);
+            templateExercise.setSets(exerciseRequest.getSets());
+            templateExercise.setReps(exerciseRequest.getReps());
+
+            exerciseEntities.add(templateExercise);
         }
 
+        workoutTemplate.setTemplateExercises(exerciseEntities);
         workoutTemplate.setUser(user);
 
         workoutTemplateRepository.save(workoutTemplate);

@@ -2,6 +2,7 @@ package kabox.fitmate.Model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,7 +20,7 @@ public class WorkoutTemplate {
     private User user;
 
     @OneToMany(mappedBy = "workoutTemplate", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<WorkoutTemplateExercise> templateExercises;
+    private List<WorkoutTemplateExercise> templateExercises = new ArrayList<>();
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
