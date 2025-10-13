@@ -13,6 +13,7 @@ import kabox.fitmate.dto.WorkoutTemplateRequest;
 import kabox.fitmate.dto.WorkoutTemplateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -83,6 +84,7 @@ public class WorkoutTemplateService {
 
     }
 
+    @Transactional(readOnly = true)
     public List<WorkoutTemplateResponse> getTemplates(Long user_id) {
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + user_id + " not found"));
@@ -90,13 +92,9 @@ public class WorkoutTemplateService {
         List<WorkoutTemplate> workoutTemplates = workoutTemplateRepository.findByUserId(user_id);
 
         return workoutTemplates.stream()
-                .map(template -> new WorkoutTemplateResponse(
-                        template.getId(),
-                        template.getName(),
-                        template.getDescription(),
-                        template.getTemplateExercises().size()
-                ))
+                .map(WorkoutTemplateResponse::new)
                 .collect(Collectors.toList());
+
     }
 
 

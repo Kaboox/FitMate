@@ -3,6 +3,7 @@ package kabox.fitmate.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +40,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "exercise_id")
     )
     private Set<Exercise> favorites = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WorkoutTemplate> workoutTemplates = new ArrayList<>();
+
 
     public Long getId() {
         return id;
@@ -102,5 +107,25 @@ public class User {
 
     public void setFavoriteExercises(Set<Exercise> favorites) {
         this.favorites = favorites;
+    }
+
+    public List<Workout> getWorkouts() {
+        return workouts;
+    }
+
+    public List<WorkoutTemplate> getWorkoutTemplates() {
+        return workoutTemplates;
+    }
+
+    public void setFavorites(Set<Exercise> favorites) {
+        this.favorites = favorites;
+    }
+
+    public void setWorkouts(List<Workout> workouts) {
+        this.workouts = workouts;
+    }
+
+    public void setWorkoutTemplates(List<WorkoutTemplate> workoutTemplates) {
+        this.workoutTemplates = workoutTemplates;
     }
 }

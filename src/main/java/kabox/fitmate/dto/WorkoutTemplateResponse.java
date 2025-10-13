@@ -12,6 +12,15 @@ public class WorkoutTemplateResponse {
     private List<WorkoutTemplateExerciseResponse> exercises;
 
     public WorkoutTemplateResponse(WorkoutTemplate workoutTemplate) {
+        this.id = workoutTemplate.getId();
+        this.name = workoutTemplate.getName();
+        this.description = workoutTemplate.getDescription();
+
+        if (workoutTemplate.getTemplateExercises() != null) {
+            this.exercises = workoutTemplate.getTemplateExercises().stream()
+                    .map(WorkoutTemplateExerciseResponse::new)
+                    .toList();
+        }
     }
 
     public WorkoutTemplateResponse(Long id, String name, String description, int size) {
