@@ -103,7 +103,7 @@ public class WorkoutTemplateService {
                 .orElseThrow(() -> new IllegalArgumentException("Template with ID " + templateId + " not found"));
 
         if (!template.getUser().getId().equals(userId)) {
-            throw new IllegalStateException("You cannot update someone else's temaplte");
+            throw new IllegalStateException("You cannot update someone else's template");
         }
 
         if (workoutTemplateRequest.getName() != null && !workoutTemplateRequest.getName().isBlank()) {
@@ -115,6 +115,7 @@ public class WorkoutTemplateService {
         }
 
         if(workoutTemplateRequest.getExercises() != null) {
+            workoutTemplateExerciseRepository.deleteAll(template.getTemplateExercises());
             template.getTemplateExercises().clear();
 
             for (WorkoutTemplateExerciseRequest exReq : workoutTemplateRequest.getExercises()) {
@@ -145,6 +146,7 @@ public class WorkoutTemplateService {
 
         workoutTemplateRepository.delete(template);
     }
+
 
 
 

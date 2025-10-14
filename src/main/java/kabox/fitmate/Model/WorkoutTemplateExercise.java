@@ -10,7 +10,7 @@ public class WorkoutTemplateExercise {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "workout_template_id", nullable = false)
+    @JoinColumn(name = "workout_template_id")
     private WorkoutTemplate workoutTemplate;
 
     @ManyToOne
