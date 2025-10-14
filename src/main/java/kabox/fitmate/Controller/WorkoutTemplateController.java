@@ -1,6 +1,7 @@
 package kabox.fitmate.Controller;
 
 
+import kabox.fitmate.Model.User;
 import kabox.fitmate.dto.WorkoutTemplateRequest;
 import kabox.fitmate.dto.WorkoutTemplateResponse;
 import kabox.fitmate.security.CustomUserDetails;
@@ -25,7 +26,7 @@ public class WorkoutTemplateController {
     @GetMapping("/me")
     public ResponseEntity<List<WorkoutTemplateResponse>> getTemplates(@AuthenticationPrincipal CustomUserDetails userDetails) {
         if (userDetails == null) {
-            return ResponseEntity.status(401).build(); // NOT LOGGED IN
+            return ResponseEntity.status(401).build();
         }
 
         Long userId = userDetails.getUser().getId();
@@ -38,6 +39,22 @@ public class WorkoutTemplateController {
 
         WorkoutTemplateResponse response = workoutTemplateService.createTemplate(request, userDetails.getUser().getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping("/{templateId}")
+    public ResponseEntity<WorkoutTemplateResponse> updateTemplate(@PathVariable Long templateId, @RequestBody WorkoutTemplateRequest workoutTemplateRequest, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        WorkoutTemplateResponse response = workoutTemplateService.createTemplate(
+                workoutTemplateRequest,
+                userDetails.getUser().getId()
+        );
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{templateId}")
+    public  ResponseEntity<Void> deleteTemplate(@PathVariable Long templateId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        workoutTemplateService.deleteTemplate(templateId, userDetails.getUser().getId());
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -97,6 +97,55 @@ public class WorkoutTemplateService {
 
     }
 
+    @Transactional
+    public WorkoutTemplateResponse updateTemplate(Long templateId, WorkoutTemplateRequest workoutTemplateRequest, Long userId) {
+        WorkoutTemplate template = workoutTemplateRepository.findById(templateId)
+                .orElseThrow(() -> new IllegalArgumentException("Template with ID " + templateId + " not found"));
+
+        if (!template.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("You cannot update someone else's temaplte");
+        }
+
+        if (workoutTemplateRequest.getName() != null && !workoutTemplateRequest.getName().isBlank()) {
+            template.setName(workoutTemplateRequest.getName());
+        }
+
+        if (workoutTemplateRequest.getDescription() != null) {
+            template.setDescription(workoutTemplateRequest.getDescription());
+        }
+
+        if(workoutTemplateRequest.getExercises() != null) {
+            template.getTemplateExercises().clear();
+
+            for (WorkoutTemplateExerciseRequest exReq : workoutTemplateRequest.getExercises()) {
+                Exercise exerciseEntity = exerciseRepository.findById(exReq.getExerciseId())
+                        .orElseThrow(() -> new IllegalArgumentException("Exercise with ID " + exReq.getExerciseId() + " not found"));
+
+                WorkoutTemplateExercise exercise = new WorkoutTemplateExercise();
+                exercise.setWorkoutTemplate(template);
+                exercise.setExercise(exerciseEntity);
+                exercise.setSets(exReq.getSets());
+                exercise.setReps(exReq.getReps());
+                template.getTemplateExercises().add(exercise);
+            }
+        }
+        //workoutTemplateRepository.save(template);
+        return new WorkoutTemplateResponse(template);
+
+    }
+
+    @Transactional
+    public void deleteTemplate(Long templateId, Long userId) {
+        WorkoutTemplate template = workoutTemplateRepository.findById(templateId)
+                .orElseThrow(() -> new IllegalArgumentException("Template with ID " + templateId + " not found"));
+
+        if (!template.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("You cannot delete someone else's template");
+        }
+
+        workoutTemplateRepository.delete(template);
+    }
+
 
 
 
