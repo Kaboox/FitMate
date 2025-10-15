@@ -43,7 +43,8 @@ public class WorkoutTemplateController {
 
     @PutMapping("/{templateId}")
     public ResponseEntity<WorkoutTemplateResponse> updateTemplate(@PathVariable Long templateId, @RequestBody WorkoutTemplateRequest workoutTemplateRequest, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        WorkoutTemplateResponse response = workoutTemplateService.createTemplate(
+        WorkoutTemplateResponse response = workoutTemplateService.updateTemplate(
+                templateId,
                 workoutTemplateRequest,
                 userDetails.getUser().getId()
         );
