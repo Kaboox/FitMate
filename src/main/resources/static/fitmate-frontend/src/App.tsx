@@ -7,6 +7,7 @@ import ExerciseDetails from "./pages/ExerciseDetails";
 import { AuthProvider } from "./context/AuthContext";
 import Profile from "./pages/Profile";
 import { UserProvider } from "./context/UserContext";
+import Templates from "./pages/Templates";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/exercise/:id" element={<ExerciseDetails />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/templates" element={<Templates />} />
         </Routes>
         </UserProvider>
       </NavbarProvider>

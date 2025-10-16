@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
-type ActiveTab = "discover" | "search" | "filter" | "favorites" | "trending";
+type ActiveTab = "discover" | "search" | "filter" | "favorites";
 
 type NavbarContextType = {
     activeTab: ActiveTab;

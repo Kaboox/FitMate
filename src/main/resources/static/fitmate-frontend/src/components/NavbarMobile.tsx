@@ -4,7 +4,7 @@ import {
   X,
   Search,
   Star,
-  Flame,
+  LayoutTemplate,
   ListFilter,
   User,
   LogOut,
@@ -18,7 +18,6 @@ const navItems = [
   { id: "search", icon: <Search size={24} />, label: "Discover" },
   { id: "filter", icon: <ListFilter size={24} />, label: "Category" },
   { id: "favorites", icon: <Star size={24} />, label: "Favorites" },
-  { id: "trending", icon: <Flame size={24} />, label: "Trending" },
 ] as const;
 
 export default function NavbarMobile() {
@@ -91,6 +90,20 @@ export default function NavbarMobile() {
                 >
                   <User size={24} />
                   <span className="text-sm">Profile</span>
+                </Link>
+                <Link
+                  to="/templates"
+                  title="Temaplates"
+                  onClick={() => setIsOpen(false)}
+                  className={`p-2 cursor-pointer flex gap-2 items-center ${
+                    activeTab === "templates" ? "text-green-400" : "text-white"
+                  }`}
+                >
+                  <LayoutTemplate
+                    size={24}
+                    className="hover:text-green-300 transition cursor-pointer"
+                  />
+                  <span>Templates</span>
                 </Link>
                 <div
                   onClick={() => {

@@ -2,7 +2,7 @@ import {
   ListFilter,
   Search,
   Star,
-  Flame,
+  LayoutTemplate,
   LogIn,
   LogOut,
   User,
@@ -15,7 +15,6 @@ const navItems = [
   { id: "search", icon: <Search size={24} />, label: "Discover" },
   { id: "filter", icon: <ListFilter size={24} />, label: "Filter" },
   { id: "favorites", icon: <Star size={24} />, label: "Favorites" },
-  { id: "trending", icon: <Flame size={24} />, label: "Trending" },
 ] as const;
 
 export default function NavbarDesktop() {
@@ -51,9 +50,15 @@ export default function NavbarDesktop() {
       )}
 
       {user && (
-        <div className="p-2 flex flex-col gap-8 justify-center items-center rounded-xl text-white">
+        <div className="p-2 flex flex-col gap-10 justify-center items-center rounded-xl text-white">
           <Link to="/profile" title="Profile">
             <User
+              size={24}
+              className="hover:text-green-300 transition cursor-pointer"
+            />
+          </Link>
+          <Link to="/templates" title="Temaplates">
+            <LayoutTemplate
               size={24}
               className="hover:text-green-300 transition cursor-pointer"
             />
