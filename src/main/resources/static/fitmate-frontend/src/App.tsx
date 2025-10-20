@@ -8,20 +8,25 @@ import { AuthProvider } from "./context/AuthContext";
 import Profile from "./pages/Profile";
 import { UserProvider } from "./context/UserContext";
 import Templates from "./pages/Templates";
+import { TemplateProvider } from "./context/TemplateContext";
+import TemplateDetails from "./pages/TemplateDetails";
 
 function App() {
   return (
     <AuthProvider>
       <NavbarProvider>
         <UserProvider>
-          <Routes>
-          <Route path="/" element={<Discover />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/exercise/:id" element={<ExerciseDetails />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/templates" element={<Templates />} />
-        </Routes>
+          <TemplateProvider>
+            <Routes>
+              <Route path="/" element={<Discover />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/exercise/:id" element={<ExerciseDetails />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/templates" element={<Templates />} />
+              <Route path="/templates/:id" element={<TemplateDetails />} />
+            </Routes>
+          </TemplateProvider>
         </UserProvider>
       </NavbarProvider>
     </AuthProvider>

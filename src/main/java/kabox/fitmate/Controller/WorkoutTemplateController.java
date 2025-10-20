@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -32,6 +33,22 @@ public class WorkoutTemplateController {
         Long userId = userDetails.getUser().getId();
         List<WorkoutTemplateResponse> templates = workoutTemplateService.getTemplates(userId);
         return ResponseEntity.ok(templates);
+    }
+
+    @GetMapping("/{templateId}")
+    public ResponseEntity<WorkoutTemplateResponse> getTemplateDetails(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long templateId) {
+        if (userDetails == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        try {
+            WorkoutTemplateResponse response = workoutTemplateService.getTemplateById(templateId, userDetails.getUser().getId());
+            return ResponseEntity.ok(response);
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @PostMapping

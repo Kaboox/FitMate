@@ -18,7 +18,9 @@ export interface WorkoutTemplate {
 
 export interface TemplateContextType {
   templates: WorkoutTemplate[];
+  templateDetails: WorkoutTemplate | null;
   fetchTemplates: () => Promise<void>;
+  fetchTemplateDetails: (templateId: number) => Promise<void>;
 }
 
 const TemplateContext = createContext<TemplateContextType | undefined>(
@@ -30,6 +32,8 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const { user } = useUser();
 
   const [templates, setTemplates] = useState<WorkoutTemplate[]>([]);
+
+  const [templateDetails, setTemplateDetails] = useState<WorkoutTemplate | null>(null);
 
   const token = localStorage.getItem("token");
 
@@ -51,12 +55,30 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   };
 
+  const fetchTemplateDetails = async (templateId: number) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/workout-template/${templateId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = await response.json();
+      setTemplateDetails(data);
+    } catch (error) {
+      console.error("Error fetching template details:", error);
+    }
+  };
+
   useEffect(() => {
     fetchTemplates();
   }, []);
 
   return (
-    <TemplateContext.Provider value={{templates, fetchTemplates}}>
+    <TemplateContext.Provider value={{templates, fetchTemplates, templateDetails, fetchTemplateDetails}}>
       {children}
     </TemplateContext.Provider>
   );

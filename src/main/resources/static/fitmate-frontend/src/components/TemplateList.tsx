@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTemplate } from "../context/TemplateContext";
+import { useNavigate } from "react-router-dom";
 
 export interface WorkoutTemplateExercise {
     id: number;
@@ -20,6 +21,8 @@ const TemplateList = () => {
 
     const {templates} = useTemplate();
 
+    const navigate = useNavigate();
+
         
 
 
@@ -32,6 +35,7 @@ const TemplateList = () => {
       <h2 className="text-2xl font-bold mb-4">Templates</h2>
       {templates.map((template) => (
         <div
+        onClick={() => navigate(`/templates/${template.id}`)}
           key={template.id}
             className="border border-neutral-700 rounded-lg p-4 mb-4 bg-neutral-900"
         >

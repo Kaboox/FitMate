@@ -23,7 +23,7 @@ export default function NavbarDesktop() {
 
   return (
     <div className="flex flex-col justify-between items-center gap-8 w-full h-screen sticky top-0 py-10 bg-neutral-800 rounded-md">
-      <h1 className="text-xl font-mono text-white">FitMate</h1>
+      <Link to="/" title="FitMate"><h1 className="text-xl font-mono text-white">FitMate</h1></Link>
 
       <div className="flex flex-col gap-8">
         {navItems.map((item) => (

@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -96,6 +97,20 @@ public class WorkoutTemplateService {
                 .collect(Collectors.toList());
 
     }
+
+    @Transactional(readOnly = true)
+    public WorkoutTemplateResponse getTemplateById(Long templateId, Long userId) throws AccessDeniedException {
+        WorkoutTemplate template = workoutTemplateRepository.findById(templateId)
+                .orElseThrow(() -> new IllegalArgumentException("Template with ID " + templateId + " not found"));
+
+        // sprawdzamy, czy użytkownik jest właścicielem
+        if (!template.getUser().getId().equals(userId)) {
+            throw new AccessDeniedException("You cannot access someone else's template");
+        }
+
+        return new WorkoutTemplateResponse(template);
+    }
+
 
     @Transactional
     public WorkoutTemplateResponse updateTemplate(Long templateId, WorkoutTemplateRequest workoutTemplateRequest, Long userId) {
