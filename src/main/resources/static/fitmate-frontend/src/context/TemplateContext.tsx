@@ -27,13 +27,15 @@ const TemplateContext = createContext<TemplateContextType | undefined>(
   undefined
 );
 
-export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  
+export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const { user } = useUser();
 
   const [templates, setTemplates] = useState<WorkoutTemplate[]>([]);
 
-  const [templateDetails, setTemplateDetails] = useState<WorkoutTemplate | null>(null);
+  const [templateDetails, setTemplateDetails] =
+    useState<WorkoutTemplate | null>(null);
 
   const token = localStorage.getItem("token");
 
@@ -78,7 +80,14 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, []);
 
   return (
-    <TemplateContext.Provider value={{templates, fetchTemplates, templateDetails, fetchTemplateDetails}}>
+    <TemplateContext.Provider
+      value={{
+        templates,
+        fetchTemplates,
+        templateDetails,
+        fetchTemplateDetails,
+      }}
+    >
       {children}
     </TemplateContext.Provider>
   );

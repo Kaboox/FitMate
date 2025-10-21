@@ -53,15 +53,14 @@ export default function ExerciseDetail() {
           className="w-full h-full object-cover"
         />
         <div>
-          
-<p
-  className="absolute top-4 left-4 flex items-center gap-2 text-xl md:text-2xl font-mono text-white cursor-pointer hover:text-green-400 transition"
-  style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.8)" }}
-  onClick={() => navigate(-1)}
->
-  <Undo size={24} />
-  FitMate
-</p>
+          <p
+            className="absolute top-4 left-4 flex items-center gap-2 text-xl md:text-2xl font-mono text-white cursor-pointer hover:text-green-400 transition"
+            style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.8)" }}
+            onClick={() => navigate(-1)}
+          >
+            <Undo size={24} />
+            FitMate
+          </p>
         </div>
         <div className="absolute bottom-4 left-6 bg-black bg-opacity-60 px-4 py-2 rounded-lg">
           <h1 className="text-3xl md:text-5xl font-bold">

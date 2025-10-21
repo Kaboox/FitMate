@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 
 interface User {
   email: string;
@@ -66,32 +72,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     window.location.href = "/login";
-  }
+  };
 
   const register = async (name: string, email: string, password: string) => {
     try {
-        const response = await fetch("http://localhost:8080/auth/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, email, password }),
-        });
-        if (!response.ok) {
-            const errorData = await response.json();
-            alert(`Registration failed: ${errorData.message || "Unknown error"}`);
-            console.error("Registration error:", errorData);
-            return;
-        }
-        const data = await response.json();
-        alert("Registration successful! Please log in.");
-        window.location.href = "/login";
+      const response = await fetch("http://localhost:8080/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(`Registration failed: ${errorData.message || "Unknown error"}`);
+        console.error("Registration error:", errorData);
+        return;
+      }
+      const data = await response.json();
+      alert("Registration successful! Please log in.");
+      window.location.href = "/login";
     } catch (err) {
-        setError("Registration failed");
-        console.error("Registration error:", err);
+      setError("Registration failed");
+      console.error("Registration error:", err);
     }
-
-
-  }
-
+  };
 
   return (
     <AuthContext.Provider

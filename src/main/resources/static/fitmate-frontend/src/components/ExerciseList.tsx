@@ -16,7 +16,6 @@ export default function ExerciseList() {
   const { getFavorites } = useUser();
   const favorites = getFavorites();
 
-
   useEffect(() => {
     fetch("http://localhost:8080/exercises")
       .then((res) => res.json())

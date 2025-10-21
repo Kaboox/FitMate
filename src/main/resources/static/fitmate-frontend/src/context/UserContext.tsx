@@ -41,10 +41,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
         localStorage.setItem("favorites", JSON.stringify(updated));
         return updated;
-      })
+      });
       return;
     }
-    
+
     // if user logged in, update on server
     const token = localStorage.getItem("token");
 

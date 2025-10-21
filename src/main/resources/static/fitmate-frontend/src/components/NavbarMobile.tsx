@@ -33,7 +33,9 @@ export default function NavbarMobile() {
   return (
     <div className="w-full sticky top-0 bg-neutral-800 px-4 py-3 flex justify-between items-center">
       {/* Logo */}
-      <Link to="/" title="FitMate"><h1 className="text-xl font-mono text-white">FitMate</h1></Link>
+      <Link to="/" title="FitMate">
+        <h1 className="text-xl font-mono text-white">FitMate</h1>
+      </Link>
 
       {/* Hamburger */}
       <button onClick={() => setIsOpen(true)} className="text-white">

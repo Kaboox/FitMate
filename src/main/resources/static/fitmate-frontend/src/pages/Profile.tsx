@@ -15,8 +15,6 @@ export default function Profile() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  
-
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -48,7 +46,6 @@ export default function Profile() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
 
   // Modifying profile details
   const handleSubmit = async (e: React.FormEvent) => {
