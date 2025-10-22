@@ -10,23 +10,28 @@ import { UserProvider } from "./context/UserContext";
 import Templates from "./pages/Templates";
 import { TemplateProvider } from "./context/TemplateContext";
 import TemplateDetails from "./pages/TemplateDetails";
+import TemplateCreatePage from "./pages/TemplateCreatePage";
+import { ExerciseProvider } from "./context/ExerciseContext";
 
 function App() {
   return (
     <AuthProvider>
       <NavbarProvider>
         <UserProvider>
-          <TemplateProvider>
-            <Routes>
-              <Route path="/" element={<Discover />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/exercise/:id" element={<ExerciseDetails />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/templates" element={<Templates />} />
-              <Route path="/templates/:id" element={<TemplateDetails />} />
-            </Routes>
-          </TemplateProvider>
+          <ExerciseProvider>
+            <TemplateProvider>
+              <Routes>
+                <Route path="/" element={<Discover />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/exercise/:id" element={<ExerciseDetails />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/templates" element={<Templates />} />
+                <Route path="/templates/:id" element={<TemplateDetails />} />
+                <Route path="/templates/new" element={<TemplateCreatePage />} />
+              </Routes>
+            </TemplateProvider>
+          </ExerciseProvider>
         </UserProvider>
       </NavbarProvider>
     </AuthProvider>

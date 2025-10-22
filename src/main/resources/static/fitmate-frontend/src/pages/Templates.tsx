@@ -10,7 +10,7 @@ export default function Templates() {
       <div
         className="flex items-center gap-2 font-mono text-white cursor-pointer hover:text-green-400 transition mb-8"
         style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.8)" }}
-        onClick={() => navigate(-1)}
+        onClick={() => navigate("/")}
       >
         <Undo size={24} />
         <p className="text-lg">FitMate</p>
@@ -19,6 +19,12 @@ export default function Templates() {
       <div className="flex-1 flex justify-center">
         <div className="w-full max-w-5xl px-4">
           <h1 className="text-3xl font-bold mb-6">Workout Templates</h1>
+          <button
+            onClick={() => navigate("/templates/new")}
+            className="bg-green-500 hover:bg-green-600 text-black font-semibold px-4 py-2 rounded-lg transition"
+          >
+            + Add Template
+          </button>
           <TemplateList />
         </div>
       </div>

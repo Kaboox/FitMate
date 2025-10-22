@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useUser } from "./UserContext";
+import { useNavigate } from "react-router-dom";
 
 export interface WorkoutTemplateExercise {
   id: number;
@@ -21,6 +22,7 @@ export interface TemplateContextType {
   templateDetails: WorkoutTemplate | null;
   fetchTemplates: () => Promise<void>;
   fetchTemplateDetails: (templateId: number) => Promise<void>;
+  deleteTemplate: (templateId: number) => Promise<void>;
 }
 
 const TemplateContext = createContext<TemplateContextType | undefined>(
@@ -38,6 +40,8 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({
     useState<WorkoutTemplate | null>(null);
 
   const token = localStorage.getItem("token");
+
+  const navigate = useNavigate();
 
   const fetchTemplates = async () => {
     try {
@@ -75,6 +79,32 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const deleteTemplate = async (templateId: number) => {
+  try {
+    const response = await fetch(`http://localhost:8080/workout-template/${templateId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // po udanym DELETE możesz np. odświeżyć listę lub przejść z powrotem:
+    await fetchTemplates();
+
+    
+    if (!response.ok) {
+      console.error("Failed to delete template:", response.status);
+      return;
+    }
+    navigate("/templates");
+
+  } catch (error) {
+    console.error("Error deleting template:", error);
+  }
+};
+
+
   useEffect(() => {
     fetchTemplates();
   }, []);
@@ -86,6 +116,7 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({
         fetchTemplates,
         templateDetails,
         fetchTemplateDetails,
+        deleteTemplate
       }}
     >
       {children}

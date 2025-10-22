@@ -5,7 +5,8 @@ import { useEffect } from "react";
 
 export default function TemplateDetails() {
   const { id } = useParams<{ id: string }>();
-  const { templateDetails, fetchTemplateDetails } = useTemplate();
+  const { templateDetails, fetchTemplateDetails, deleteTemplate } =
+    useTemplate();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,7 +34,14 @@ export default function TemplateDetails() {
               <button className="hover:text-yellow-400 transition">
                 <Edit3 size={24} />
               </button>
-              <button className="hover:text-red-500 transition">
+              <button
+                className="hover:text-red-500 transition"
+                onClick={async () => {
+                  if (templateDetails) {
+                    await deleteTemplate(templateDetails.id);
+                  }
+                }}
+              >
                 <Trash2 size={24} />
               </button>
             </div>
