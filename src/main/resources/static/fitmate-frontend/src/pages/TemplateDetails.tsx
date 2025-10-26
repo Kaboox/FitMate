@@ -1,5 +1,5 @@
 import { Undo, Trash2, Edit3 } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTemplate } from "../context/TemplateContext";
 import { useEffect } from "react";
 
@@ -31,9 +31,11 @@ export default function TemplateDetails() {
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-bold">{templateDetails?.name}</h1>
             <div className="flex gap-4">
+              <Link to={`/templates/edit/${templateDetails?.id}`}>
               <button className="hover:text-yellow-400 transition">
                 <Edit3 size={24} />
               </button>
+              </Link>
               <button
                 className="hover:text-red-500 transition"
                 onClick={async () => {

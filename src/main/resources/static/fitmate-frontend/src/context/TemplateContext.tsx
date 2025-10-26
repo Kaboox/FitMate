@@ -73,6 +73,7 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       );
       const data = await response.json();
+      console.log("Fetched template details:", data);
       setTemplateDetails(data);
     } catch (error) {
       console.error("Error fetching template details:", error);
@@ -89,7 +90,7 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({
       },
     });
 
-    // po udanym DELETE możesz np. odświeżyć listę lub przejść z powrotem:
+    // refresh the templates list after deletion
     await fetchTemplates();
 
     
