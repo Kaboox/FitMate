@@ -14,8 +14,8 @@ export default function TemplateEditPage() {
   useEffect(() => {
     const found = templates.find((t) => t.id === Number(id));
     if (found) {
+      console.log("found template in context:", found);
       setTemplateData(found);
-      console.log(templateData)
     } else {
       fetch(`http://localhost:8080/workout-template/${id}`, {
         headers: {

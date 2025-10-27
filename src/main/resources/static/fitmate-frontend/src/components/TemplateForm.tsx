@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { useExercises } from "../context/ExerciseContext";
 
@@ -11,9 +11,11 @@ interface ExerciseInput {
 }
 
 interface TemplateFormProps {
-  initialName?: string;
-  initialDescription?: string;
-  initialExercises?: ExerciseInput[];
+  initialValues?: {
+    name?: string;
+    description?: string;
+    exercises?: { exerciseId: number; sets: number; reps: number }[];
+  };
   onSubmit: (data: {
     name: string;
     description: string;
@@ -21,36 +23,49 @@ interface TemplateFormProps {
   }) => void;
   onCancel: () => void;
   title: string;
-  initialValues?: any;
 }
 
 export default function TemplateForm({
-  initialName = "",
-  initialDescription = "",
-  initialExercises = [],
+  initialValues,
   onSubmit,
   onCancel,
   title,
-  initialValues
 }: TemplateFormProps) {
-  const [name, setName] = useState(initialName);
-  const [description, setDescription] = useState(initialDescription);
-  //const [exercises, setExercises] = useState<ExerciseInput[]>(initialExercises);
   const { exercises: allExercises } = useExercises();
-  const [templateName, setTemplateName] = useState(initialValues?.name ?? "");
-  const [exercises, setExercises] = useState(initialValues?.exercises ?? []);
 
+  const [name, setName] = useState(initialValues?.name || "");
+  const [description, setDescription] = useState(initialValues?.description || "");
+  const [exercises, setExercises] = useState<ExerciseInput[]>([]);
+
+  
+  useEffect(() => {
+    if (initialValues?.exercises) {
+      setExercises(
+        initialValues.exercises.map((ex, i) => ({
+          id: i + 1,
+          exerciseId: ex.exerciseId,
+          sets: ex.sets,
+          reps: ex.reps,
+          search: "",
+        }))
+      );
+    }
+  }, [initialValues]);
+
+  // Add new exercise
   const addExercise = () => {
-    setExercises([
-      ...exercises,
+    setExercises((prev) => [
+      ...prev,
       { id: Date.now(), exerciseId: null, sets: 3, reps: 10, search: "" },
     ]);
   };
 
+  // Delete exercise
   const removeExercise = (id: number) => {
-    setExercises(exercises.filter((ex) => ex.id !== id));
+    setExercises((prev) => prev.filter((ex) => ex.id !== id));
   };
 
+  // Update exercise field
   const handleChange = (
     id: number,
     field: keyof ExerciseInput,
@@ -61,6 +76,7 @@ export default function TemplateForm({
     );
   };
 
+  // Form submit
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit({
@@ -116,6 +132,7 @@ export default function TemplateForm({
         </div>
 
         {exercises.map((ex) => {
+          // Filtering exercises based on search input
           const filtered = allExercises.filter((e) =>
             e.name.toLowerCase().includes(ex.search.toLowerCase())
           );
@@ -183,6 +200,7 @@ export default function TemplateForm({
         })}
       </div>
 
+      {/* Buttons */}
       <div className="flex justify-end gap-4">
         <button
           type="button"
