@@ -13,6 +13,7 @@ import TemplateDetails from "./pages/TemplateDetails";
 import TemplateCreatePage from "./pages/TemplateCreatePage";
 import { ExerciseProvider } from "./context/ExerciseContext";
 import TemplateEditPage from "./pages/TemplateEditPage";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -30,8 +31,12 @@ function App() {
                 <Route path="/templates" element={<Templates />} />
                 <Route path="/templates/:id" element={<TemplateDetails />} />
                 <Route path="/templates/new" element={<TemplateCreatePage />} />
-                <Route path="/templates/edit/:id" element={<TemplateEditPage />} />
+                <Route
+                  path="/templates/edit/:id"
+                  element={<TemplateEditPage />}
+                />
               </Routes>
+              <Toaster position="bottom-center" />
             </TemplateProvider>
           </ExerciseProvider>
         </UserProvider>

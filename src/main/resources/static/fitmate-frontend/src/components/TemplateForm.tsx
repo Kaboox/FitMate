@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { useExercises } from "../context/ExerciseContext";
+import toast from "react-hot-toast";
+
 
 interface ExerciseInput {
   id: number;
@@ -78,17 +80,43 @@ export default function TemplateForm({
 
   // Form submit
   const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit({
-      name,
-      description,
-      exercises: exercises.map((ex) => ({
-        exerciseId: ex.exerciseId,
-        sets: ex.sets,
-        reps: ex.reps,
-      })),
-    });
-  };
+  e.preventDefault();
+
+  // 🔹 Prosta walidacja
+  if (!name.trim()) {
+    alert("Template name cannot be empty");
+    return;
+  }
+  if (exercises.length === 0) {
+    alert("You must add at least one exercise");
+    return;
+  }
+
+  for (const ex of exercises) {
+    if (!ex.exerciseId) {
+      alert("Each exercise must be selected from the list");
+      return;
+    }
+    if (ex.sets <= 0 || ex.reps <= 0) {
+      alert("Sets and reps must be positive numbers");
+      return;
+    }
+  }
+
+  onSubmit({
+    name,
+    description,
+    exercises: exercises.map((ex) => ({
+      exerciseId: ex.exerciseId,
+      sets: ex.sets,
+      reps: ex.reps,
+    })),
+  });
+
+  toast.success("Template saved successfully!");
+
+};
+
 
   return (
     <form
