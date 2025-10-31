@@ -1,5 +1,5 @@
-import React, { use, useEffect, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import  { useEffect, useState } from "react";
+import {  useNavigate, useParams } from "react-router-dom";
 import { Undo } from "lucide-react";
 
 interface Muscle {
@@ -33,7 +33,7 @@ export default function ExerciseDetail() {
       .then((data) => setExerciseData(data))
       .catch((error) => console.error("Error fetching exercise data:", error));
     document.title = "Exercise Details - FitMate";
-  }, []);
+  }, [id]);
 
   if (!exerciseData) {
     return (

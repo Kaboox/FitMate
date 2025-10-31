@@ -7,9 +7,9 @@ import {
   LogOut,
   User,
 } from "lucide-react";
-import { useNavbar } from "../context/NavbarContext";
+import { useNavbar } from "../hooks/useNavbar";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 
 const navItems = [
   { id: "search", icon: <Search size={24} />, label: "Discover" },
@@ -18,7 +18,7 @@ const navItems = [
 ] as const;
 
 export default function NavbarDesktop() {
-  const { activeTab, setActiveTab, toggleActiveTab } = useNavbar();
+  const { activeTab, toggleActiveTab } = useNavbar();
   const { user, logout } = useAuth();
 
   return (

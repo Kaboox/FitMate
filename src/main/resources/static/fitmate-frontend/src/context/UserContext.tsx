@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useEffect, useState } from "react";
 
 interface User {
   id: number;
@@ -16,7 +17,7 @@ interface UserContextType {
   getFavorites: () => number[];
 }
 
-const UserContext = createContext<UserContextType | undefined>(undefined);
+export const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -98,8 +99,3 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const useUser = () => {
-  const ctx = useContext(UserContext);
-  if (!ctx) throw new Error("useUser must be used inside UserProvider");
-  return ctx;
-};

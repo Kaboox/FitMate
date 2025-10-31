@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useCallback, useEffect, useState } from "react";
 
 interface Exercise {
   id: number;
@@ -13,13 +14,13 @@ interface ExerciseContextType {
   refreshExercises: () => void;
 }
 
-const ExerciseContext = createContext<ExerciseContextType>({
+export const ExerciseContext = createContext<ExerciseContextType>({
   exercises: [],
   loading: false,
   refreshExercises: () => {},
 });
 
-export const useExercises = () => useContext(ExerciseContext);
+
 
 export const ExerciseProvider = ({ children }: { children: React.ReactNode }) => {
   const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -27,24 +28,36 @@ export const ExerciseProvider = ({ children }: { children: React.ReactNode }) =>
 
   const token = localStorage.getItem("token");
 
-  const fetchExercises = async () => {
+  const API_URL = "http://localhost:8080";
+
+  const fetchExercises = useCallback(async () => {
+    if (!token) {
+      setLoading(false);
+      setExercises([]); 
+      return;
+    }
+
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8080/exercises", {
+      const res = await fetch(`${API_URL}/exercises`, { 
         headers: { Authorization: `Bearer ${token}` },
       });
+      if (!res.ok) {
+        throw new Error("Failed to fetch exercises");
+      }
       const data = await res.json();
       setExercises(data);
     } catch (err) {
       console.error("Error fetching exercises:", err);
+      setExercises([]); 
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]); 
 
   useEffect(() => {
     fetchExercises();
-  }, []);
+  }, [fetchExercises]);
 
   return (
     <ExerciseContext.Provider

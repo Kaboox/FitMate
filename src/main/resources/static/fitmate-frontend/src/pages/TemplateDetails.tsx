@@ -1,6 +1,6 @@
 import { Undo, Trash2, Edit3 } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useTemplate } from "../context/TemplateContext";
+import { useTemplate } from "../hooks/useTemplate";
 import { useEffect } from "react";
 
 export default function TemplateDetails() {
@@ -13,7 +13,7 @@ export default function TemplateDetails() {
     if (id) {
       fetchTemplateDetails(Number(id));
     }
-  }, [id]);
+  });
 
   return (
     <div className="bg-black text-white min-h-screen flex flex-col p-6 md:p-12">

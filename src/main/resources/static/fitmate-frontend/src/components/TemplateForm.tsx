@@ -1,28 +1,39 @@
 import { useState, useEffect } from "react";
 import { Plus, Trash2 } from "lucide-react";
-import { useExercises } from "../context/ExerciseContext";
+import { useExercises } from "../hooks/useExercises";
 import toast from "react-hot-toast";
 
 
 interface ExerciseInput {
   id: number;
-  exerciseId: number | null;
+  exerciseId: number | null; 
   sets: number;
   reps: number;
   search: string;
 }
 
+
+interface InitialExercise {
+  exerciseId: number;
+  sets: number;
+  reps: number;
+}
+
+
+interface SubmitPayload {
+  name: string;
+  description: string;
+  exercises: InitialExercise[];
+}
+
 interface TemplateFormProps {
   initialValues?: {
-    name?: string;
-    description?: string;
-    exercises?: { exerciseId: number; sets: number; reps: number }[];
-  };
-  onSubmit: (data: {
     name: string;
     description: string;
-    exercises: { exerciseId: number | null; sets: number; reps: number }[];
-  }) => void;
+    exercises: InitialExercise[];
+  };
+ 
+  onSubmit: (data: SubmitPayload) => void; 
   onCancel: () => void;
   title: string;
 }
@@ -39,7 +50,6 @@ export default function TemplateForm({
   const [description, setDescription] = useState(initialValues?.description || "");
   const [exercises, setExercises] = useState<ExerciseInput[]>([]);
 
-  
   useEffect(() => {
     if (initialValues?.exercises) {
       setExercises(
@@ -58,6 +68,7 @@ export default function TemplateForm({
   const addExercise = () => {
     setExercises((prev) => [
       ...prev,
+     
       { id: Date.now(), exerciseId: null, sets: 3, reps: 10, search: "" },
     ]);
   };
@@ -80,43 +91,38 @@ export default function TemplateForm({
 
   // Form submit
   const submit = (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  // 🔹 Prosta walidacja
-  if (!name.trim()) {
-    alert("Template name cannot be empty");
-    return;
-  }
-  if (exercises.length === 0) {
-    alert("You must add at least one exercise");
-    return;
-  }
-
-  for (const ex of exercises) {
-    if (!ex.exerciseId) {
-      alert("Each exercise must be selected from the list");
+    if (!name.trim()) {
+      toast.error("Template name cannot be empty");
       return;
     }
-    if (ex.sets <= 0 || ex.reps <= 0) {
-      alert("Sets and reps must be positive numbers");
+    if (exercises.length === 0) {
+      toast.error("You must add at least one exercise");
       return;
     }
-  }
 
-  onSubmit({
-    name,
-    description,
-    exercises: exercises.map((ex) => ({
-      exerciseId: ex.exerciseId,
-      sets: ex.sets,
-      reps: ex.reps,
-    })),
-  });
-
-  toast.success("Template saved successfully!");
-
-};
-
+    
+    for (const ex of exercises) {
+      if (!ex.exerciseId) {
+        toast.error("Each exercise must be selected from the list");
+        return;
+      }
+      if (ex.sets <= 0 || ex.reps <= 0) {
+        toast.error("Sets and reps must be positive numbers");
+        return;
+      }
+    }
+    onSubmit({
+      name,
+      description,
+      exercises: exercises.map((ex) => ({
+        exerciseId: ex.exerciseId as number, 
+        sets: ex.sets,
+        reps: ex.reps,
+      })),
+    });
+  };
 
   return (
     <form
@@ -247,3 +253,4 @@ export default function TemplateForm({
     </form>
   );
 }
+

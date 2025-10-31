@@ -1,7 +1,16 @@
 import { Undo } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../hooks/useUser";
+
+import toast from "react-hot-toast";
+
+
+interface UpdateProfilePayload {
+  username?: string;
+  password?: string;
+  avatarUrl?: string;
+}
 
 export default function Profile() {
   const { user, setUser, refreshUser } = useUser();
@@ -41,7 +50,7 @@ export default function Profile() {
         setLoading(false);
       })
       .catch((err) => console.error(err));
-  }, [token]);
+  }, [token, navigate, setUser]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -53,11 +62,11 @@ export default function Profile() {
     let passwordChange = 0;
     if (!token) return;
 
-    const payload: any = {};
+    const payload: UpdateProfilePayload = {};
     if (form.username.trim()) payload.username = form.username.trim();
     if (form.password.trim()) {
       if (form.password !== form.confirm_password) {
-        alert("Passwords do not match");
+        toast.error("Hasła nie są zgodne!");
         return;
       }
       payload.password = form.password;

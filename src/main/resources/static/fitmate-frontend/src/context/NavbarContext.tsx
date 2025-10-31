@@ -1,6 +1,14 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import { createContext,  useState, type ReactNode } from "react";
 
-type ActiveTab = "discover" | "search" | "filter" | "favorites";
+export type ActiveTab =
+  | "discover"
+  | "search"
+  | "filter"
+  | "favorites"
+  | "profile"
+  | "templates";
+
 
 type NavbarContextType = {
   activeTab: ActiveTab;
@@ -15,7 +23,7 @@ type NavbarContextType = {
   toggleFavorite: (id: number) => void;
 };
 
-const NavbarContext = createContext<NavbarContextType | undefined>(undefined);
+export const NavbarContext = createContext<NavbarContextType | undefined>(undefined);
 
 export function NavbarProvider({ children }: { children: ReactNode }) {
   const [activeTab, setActiveTab] = useState<ActiveTab>("discover");
@@ -69,8 +77,4 @@ export function NavbarProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useNavbar() {
-  const ctx = useContext(NavbarContext);
-  if (!ctx) throw new Error("useNavbar must be used within NavbarProvider");
-  return ctx;
-}
+

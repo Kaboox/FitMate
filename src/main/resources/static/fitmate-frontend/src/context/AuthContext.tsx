@@ -1,6 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
 import {
   createContext,
-  useContext,
   useEffect,
   useState,
   type ReactNode,
@@ -21,7 +21,7 @@ interface AuthContextType {
   error: string | null;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -87,7 +87,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.error("Registration error:", errorData);
         return;
       }
-      const data = await response.json();
+      await response.json();
+
       alert("Registration successful! Please log in.");
       window.location.href = "/login";
     } catch (err) {
@@ -103,10 +104,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth() {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
-  return ctx;
 }

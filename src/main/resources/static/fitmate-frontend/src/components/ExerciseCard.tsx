@@ -1,6 +1,6 @@
 import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../hooks/useUser";
 
 type ExerciseCardProps = {
   id: number;

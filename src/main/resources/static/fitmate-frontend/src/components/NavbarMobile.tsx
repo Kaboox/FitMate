@@ -10,9 +10,10 @@ import {
   LogOut,
   LogIn,
 } from "lucide-react";
-import { useNavbar } from "../context/NavbarContext";
+import { useNavbar } from "../hooks/useNavbar";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
+import { type ActiveTab } from "../context/NavbarContext";
 
 const navItems = [
   { id: "search", icon: <Search size={24} />, label: "Discover" },
@@ -22,10 +23,10 @@ const navItems = [
 
 export default function NavbarMobile() {
   const [isOpen, setIsOpen] = useState(false);
-  const { activeTab, setActiveTab, toggleActiveTab } = useNavbar();
+  const { activeTab, toggleActiveTab } = useNavbar();
   const { user, logout } = useAuth();
 
-  const handleClick = (option: string) => {
+  const handleClick = (option: ActiveTab) => {
     toggleActiveTab(option);
     setIsOpen(false);
   };

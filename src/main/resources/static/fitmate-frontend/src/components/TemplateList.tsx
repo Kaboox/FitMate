@@ -1,4 +1,4 @@
-import { useTemplate } from "../context/TemplateContext";
+import { useTemplate } from "../hooks/useTemplate";
 import { useNavigate } from "react-router-dom";
 
 export interface WorkoutTemplateExercise {

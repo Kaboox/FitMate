@@ -1,5 +1,5 @@
-import { useNavbar } from "../context/NavbarContext";
-import { useUser } from "../context/UserContext";
+import { useNavbar } from "../hooks/useNavbar";
+import { useUser } from "../hooks/useUser";
 import type { Exercise } from "../types/Exercise";
 import ExerciseCard from "./ExerciseCard";
 import { useEffect, useState } from "react";

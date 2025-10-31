@@ -1,13 +1,27 @@
 import TemplateForm from "../components/TemplateForm";
 import { useNavigate } from "react-router-dom";
-import { useTemplate } from "../context/TemplateContext";
+import { useTemplate } from "../hooks/useTemplate";
+
+
+interface ExerciseInTemplate {
+  exerciseId: number | null;
+  sets: number;
+  reps: number;
+}
+
+
+interface TemplatePayload {
+  name: string;
+  description?: string; 
+  exercises: ExerciseInTemplate[];
+}
 
 export default function TemplateCreatePage() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const { fetchTemplates } = useTemplate();
 
-  const handleSubmit = async (payload: any) => {
+  const handleSubmit = async (payload: TemplatePayload) => {
     await fetch("http://localhost:8080/workout-template", {
       method: "POST",
       headers: {
