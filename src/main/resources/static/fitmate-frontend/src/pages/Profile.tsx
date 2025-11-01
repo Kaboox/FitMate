@@ -13,6 +13,9 @@ interface UpdateProfilePayload {
 }
 
 export default function Profile() {
+
+  const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+
   const { user, setUser, refreshUser } = useUser();
   const [form, setForm] = useState({
     username: "",
@@ -32,7 +35,7 @@ export default function Profile() {
       return;
     }
 
-    fetch("http://localhost:8080/users/me", {
+    fetch(`${API_URL}/users/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -75,7 +78,7 @@ export default function Profile() {
     if (form.avatarUrl.trim()) payload.avatarUrl = form.avatarUrl.trim();
 
     try {
-      const res = await fetch("http://localhost:8080/users/profile", {
+      const res = await fetch(`${API_URL}/users/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -117,7 +120,7 @@ export default function Profile() {
     formData.append("avatar", file);
 
     try {
-      const res = await fetch("http://localhost:8080/users/avatar", {
+      const res = await fetch(`${API_URL}/users/avatar`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

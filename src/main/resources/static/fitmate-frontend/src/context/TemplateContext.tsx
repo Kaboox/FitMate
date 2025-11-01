@@ -43,7 +43,7 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const token = localStorage.getItem("token");
 
-  const API_URL = "http://localhost:8080";
+  const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 
   const navigate = useNavigate();
 
@@ -54,7 +54,7 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({
     }
     try {
       const response = await fetch(
-        `localhost:8080/workout-template/me`,
+        `${API_URL}/workout-template/me`,
         {
           headers: {
             "Content-Type": "application/json",

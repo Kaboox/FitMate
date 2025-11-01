@@ -17,12 +17,15 @@ interface TemplatePayload {
 }
 
 export default function TemplateCreatePage() {
+
+  const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const { fetchTemplates } = useTemplate();
 
   const handleSubmit = async (payload: TemplatePayload) => {
-    await fetch("http://localhost:8080/workout-template", {
+    await fetch(`${API_URL}/workout-template`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

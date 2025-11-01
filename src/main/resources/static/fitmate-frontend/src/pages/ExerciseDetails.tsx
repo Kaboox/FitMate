@@ -20,6 +20,9 @@ interface Exercise {
 }
 
 export default function ExerciseDetail() {
+
+  const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
@@ -28,7 +31,7 @@ export default function ExerciseDetail() {
   useEffect(() => {
     if (!id) return;
 
-    fetch(`http://localhost:8080/exercises/${id}`)
+    fetch(`${API_URL}/exercises/${id}`)
       .then((response) => response.json())
       .then((data) => setExerciseData(data))
       .catch((error) => console.error("Error fetching exercise data:", error));

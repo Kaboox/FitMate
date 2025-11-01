@@ -20,6 +20,9 @@ interface UserContextType {
 export const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+
+  const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+
   const [user, setUser] = useState<User | null>(null);
   const [localFavorites, setLocalFavorites] = useState<number[]>(() => {
     return JSON.parse(localStorage.getItem("favorites") || "[]");
@@ -52,7 +55,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const method = user.favorites.includes(id) ? "DELETE" : "POST";
       const res = await fetch(
-        `http://localhost:8080/users/me/favorites/${id}`,
+        `${API_URL}/users/me/favorites/${id}`,
         {
           method,
           headers: {
@@ -74,7 +77,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     if (!token) return;
 
     try {
-      const res = await fetch("http://localhost:8080/users/me", {
+      const res = await fetch(`${API_URL}/users/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Failed to fetch user");

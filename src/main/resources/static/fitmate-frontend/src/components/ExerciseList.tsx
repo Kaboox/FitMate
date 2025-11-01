@@ -5,6 +5,9 @@ import ExerciseCard from "./ExerciseCard";
 import { useEffect, useState } from "react";
 
 export default function ExerciseList() {
+  
+  const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const {
     activeTab,
@@ -17,7 +20,7 @@ export default function ExerciseList() {
   const favorites = getFavorites();
 
   useEffect(() => {
-    fetch("http://localhost:8080/exercises")
+    fetch(`${API_URL}/exercises`)
       .then((res) => res.json())
       .then((data) => setExercises(data))
       .catch((err) => console.log("Error while fetching data", err));

@@ -26,6 +26,7 @@ type NavbarContextType = {
 export const NavbarContext = createContext<NavbarContextType | undefined>(undefined);
 
 export function NavbarProvider({ children }: { children: ReactNode }) {
+  
   const [activeTab, setActiveTab] = useState<ActiveTab>("discover");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
