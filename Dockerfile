@@ -1,6 +1,6 @@
 # --- Faza 1: Budowanie (Build Stage) ---
 # Używamy oficjalnego obrazu Maven (który ma Javę) do zbudowania aplikacji
-FROM maven:3.8.5-openjdk-17 AS build
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 
 # Ustawiamy katalog roboczy wewnątrz kontenera
 WORKDIR /build
@@ -18,7 +18,7 @@ RUN mvn clean package -DskipTests
 
 # --- Faza 2: Uruchomienie (Run Stage) ---
 # Używamy lekkiego, bezpiecznego obrazu Javy (Java Runtime)
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
