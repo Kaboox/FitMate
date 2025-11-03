@@ -9,25 +9,29 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CorsConfig {
 
     
-    private String vercelFrontendUrl = "https://fit-mate-8f8bcslhr-kabooxs-projects.vercel.app";
+    private String vercelFrontendUrl = "https://fit-mate-phi.vercel.app";
+    
+    private String oldVercelFrontendUrl = "https://fit-mate-8f8bcslhr-kabooxs-projects.vercel.app";
     private String localFrontendUrl = "http://localhost:5173";
 
-    @Bean
+   @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") 
+                registry.addMapping("/**")
                         
-                        
+                       
                         .allowedOrigins(
-                                localFrontendUrl,  
-                                vercelFrontendUrl 
+                                localFrontendUrl,
+                                vercelFrontendUrl,
+                                oldVercelFrontendUrl
                         ) 
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*") 
+                        .allowedHeaders("*")
                         .allowCredentials(true);
             }
         };
     }
+}
 }
