@@ -8,15 +8,24 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CorsConfig {
 
+    
+    private String vercelFrontendUrl = "https://fit-mate-8f8bcslhr-kabooxs-projects.vercel.app";
+    private String localFrontendUrl = "http://localhost:5173";
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173") // Twój frontend
+                registry.addMapping("/**") 
+                        
+                        
+                        .allowedOrigins(
+                                localFrontendUrl,  
+                                vercelFrontendUrl 
+                        ) 
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("Authorization", "Content-Type")
+                        .allowedHeaders("*") 
                         .allowCredentials(true);
             }
         };
