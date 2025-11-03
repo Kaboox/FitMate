@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/exercises")
-@CrossOrigin(origins = "http://localhost:5173") // dev server Vite
 public class ExerciseController {
 
     @Autowired
