@@ -13,18 +13,27 @@ public class Muscle {
 
     private String name;
     private String category;
+    
+    public Muscle() {
+    }
 
-    // Ćwiczenia gdzie ten mięsień jest PRIMARY
+   // DB Initializer helper contructor
+    public Muscle(String name, String category) {
+        this.name = name;
+        this.category = category;
+    }
+
+    
     @JsonIgnore
     @OneToMany(mappedBy = "primaryMuscle", cascade = CascadeType.ALL)
     private List<Exercise> primaryExercises;
 
     @JsonIgnore
-    // Ćwiczenia gdzie ten mięsień jest SECONDARY
+    
     @ManyToMany(mappedBy = "secondaryMuscles")
     private List<Exercise> secondaryExercises;
 
-    // --- GETTERY / SETTERY ---
+    
     public Long getId() { return id; }
     public String getName() { return name; }
     public String getCategory() { return category; }
