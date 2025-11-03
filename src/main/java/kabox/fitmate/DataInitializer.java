@@ -66,8 +66,8 @@ public class DataInitializer {
                 Exercise e1 = new Exercise();
                 e1.setName("Bench Press");
                 e1.setDescription("A foundational compound exercise that primarily targets the chest muscles (pectorals), as well as the shoulders (anterior deltoids) and triceps.");
-                e1.setVideoUrl("https://www.youtube.com/embed/vcBig73ojpE");
-                e1.setImageUrl("https://images.unsplash.com/photo-1690731033723-ad718c6e585a?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170"); 
+                e1.setVideoUrl("https://www.youtube.com/embed/gRVjAtPip0Y?si=5A9GjxxHxzH5M55_");
+                e1.setImageUrl("https://images.pexels.com/photos/3837781/pexels-photo-3837781.jpeg"); 
                 e1.setPrimaryMuscle(chest);
                 e1.setSecondaryMuscles(List.of(shoulders, triceps));
                 e1.setMistakes(List.of("Flaring elbows too wide", "Bouncing the bar off the chest", "Not retracting scapula"));
@@ -75,8 +75,8 @@ public class DataInitializer {
                 Exercise e2 = new Exercise();
                 e2.setName("Barbell Squat");
                 e2.setDescription("A compound, full-body exercise that trains primarily the muscles of the thighs, hips and buttocks, quadriceps femoris muscle, hamstrings, as well as strengthening the bones, ligaments and insertion of the tendons throughout the lower body.");
-                e2.setVideoUrl("https://www.youtube.com/embed/ultWZbUmD_M");
-                e2.setImageUrl("https://images.unsplash.com/photo-1604233098531-90b71b1b17a6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170"); 
+                e2.setVideoUrl("https://www.youtube.com/embed/q1fCgfieNEs?si=uVF9xFiSWPlzjkuy");
+                e2.setImageUrl("https://images.pexels.com/photos/371049/pexels-photo-371049.jpeg"); 
                 e2.setPrimaryMuscle(legs);
                 e2.setSecondaryMuscles(List.of(core));
                 e2.setMistakes(List.of("Knees caving in", "Not going deep enough (below parallel)", "Rounding the lower back"));
@@ -84,8 +84,8 @@ public class DataInitializer {
                 Exercise e3 = new Exercise();
                 e3.setName("Deadlift");
                 e3.setDescription("A compound exercise in which a loaded barbell is lifted off the ground to the level of the hips, torso perpendicular to the floor, before being placed back on the ground. It works the posterior chain, including the back, hamstrings, and glutes.");
-                e3.setVideoUrl("https://www.youtube.com/embed/D-OYMv2zSSQ");
-                e3.setImageUrl("https://images.unsplash.com/photo-1534368270820-9de3d8053204?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170"); 
+                e3.setVideoUrl("https://www.youtube.com/embed/AweC3UaM14o?si=R2sUxox7h_vA2T9S");
+                e3.setImageUrl("https://images.pexels.com/photos/5837267/pexels-photo-5837267.jpeg"); 
                 e3.setPrimaryMuscle(back);
                 e3.setSecondaryMuscles(List.of(legs, core));
                 e3.setMistakes(List.of("Rounding the lower back", "Jerking the bar off the floor", "Hyperextending the back at the top"));
