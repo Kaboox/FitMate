@@ -7,8 +7,6 @@ FitMate is a full-stack web application designed to help gym enthusiasts manage 
 
 Live Site (Vercel): https://fit-mate-phi.vercel.app/
 
-Live API (Render): https://fitmate-api-zwtq.onrender.com/
-
 ⚠️ Important: Free Tier Hosting
 
 This application is deployed on Render.com's free tier, which causes the backend service to "spin down" (sleep) after 15 minutes of inactivity.
