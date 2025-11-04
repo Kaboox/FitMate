@@ -3,6 +3,26 @@
 ## Project Overview
 FitMate is a full-stack web application designed to help gym enthusiasts manage their training progress and create custom workout plans. It serves as a comprehensive portfolio piece, showcasing proficiency in modern JavaScript/TypeScript on the frontend and Java/Spring Boot on the backend.
 
+🚀 Live Demo & Testing
+
+Live Site (Vercel): https://fit-mate-phi.vercel.app/
+
+Live API (Render): https://fitmate-api-zwtq.onrender.com/
+
+⚠️ Important: Free Tier Hosting
+
+This application is deployed on Render.com's free tier, which causes the backend service to "spin down" (sleep) after 15 minutes of inactivity.
+
+Please be patient: The first request (like logging in) may take 30-60 seconds for the server to "wake up". Subsequent requests will be fast.
+
+Test Credentials
+
+You can test the application using the pre-seeded admin account:
+
+Email: admin@fitmate.com
+
+Password: admin123
+
 ## 🚀 Key Features
 
 * **Secure User Management:** Registration and authentication implemented using **Spring Security** and **JSON Web Tokens (JWT)**.
