@@ -73,12 +73,12 @@ public class UserController {
         User u = userRepository.findById(userDetails.getUser().getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        String avatar = u.getAvatarUrl();
-        String full = avatar == null ? null
-                : ServletUriComponentsBuilder.fromRequestUri(request)
-                .replacePath(null)
-                .build()
-                .toUriString() + avatar;
+//        String avatar = u.getAvatarUrl();
+//        String full = avatar == null ? null
+//                : ServletUriComponentsBuilder.fromRequestUri(request)
+//                .replacePath(null)
+//                .build()
+//                .toUriString() + avatar;
 
         return ResponseEntity.ok(new UserResponse(u));
     }
@@ -161,39 +161,32 @@ public class UserController {
     }
 
 
-    @PutMapping("/avatar")
-    public ResponseEntity<UserResponse> uploadAvatar(
+    @PutMapping(value = "/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> uploadAvatar(
             @RequestParam("avatar") MultipartFile file,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         try {
-            // Unique file name
-            String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            // 1. Pobieramy ID zalogowanego użytkownika
+            Long userId = userDetails.getUser().getId();
 
-            // Catalog path
-            Path uploadPath = Paths.get("uploads");
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
+            // 2. KLUCZOWE: Pobieramy "żywego" użytkownika z bazy.
+            // To naprawia błąd "failed to lazily initialize a collection"
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
 
-            // Save file
-            Path filePath = uploadPath.resolve(filename);
-            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            // 3. Używamy serwisu do zapisu (on ogarnia te ścieżki D:/fitmate/...)
+            // Serwis też sam robi save do bazy w środku.
+            avatarService.storeAvatar(file, user);
 
-            // Create URL
-            String fileUrl = "http://localhost:8080/uploads/" + filename;
+            // 4. Zwracamy odpowiedź używając "żywego" obiektu user
+            return ResponseEntity.ok(new UserResponse(user));
 
-            // Save in db
-            User user = userDetails.getUser();
-            user.setAvatarUrl(fileUrl);
-            userRepository.save(user);
-
-            return ResponseEntity.ok(
-                    new UserResponse(user)
-            );
-
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            e.printStackTrace(); // Warto widzieć błąd w konsoli
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Could not upload file"));
         }
     }
 

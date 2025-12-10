@@ -5,7 +5,6 @@ import { useUser } from "../hooks/useUser";
 
 import toast from "react-hot-toast";
 
-
 interface UpdateProfilePayload {
   username?: string;
   password?: string;
@@ -13,7 +12,6 @@ interface UpdateProfilePayload {
 }
 
 export default function Profile() {
-
   const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 
   const { user, setUser, refreshUser } = useUser();
@@ -155,7 +153,13 @@ export default function Profile() {
       {/* Hero */}
       <div className="relative w-full h-64 md:h-80 flex flex-col items-center justify-center bg-neutral-800">
         <img
-          src={user?.avatarUrl || "https://via.placeholder.com/150"}
+          src={
+            user?.avatarUrl
+              ? user.avatarUrl.startsWith("http")
+                ? user.avatarUrl
+                : `${API_URL}${user.avatarUrl}`
+              : "https://via.placeholder.com/150"
+          }
           alt={user?.username}
           className="w-32 h-32 rounded-full border-4 border-green-600 object-cover cursor-pointer"
           onClick={handleAvatarClick}

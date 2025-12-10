@@ -1,8 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useCallback, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import toast from "react-hot-toast";
+
 
 export interface WorkoutTemplateExercise {
   id: number;
@@ -34,91 +34,120 @@ export const TemplateContext = createContext<TemplateContextType | undefined>(
 export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  
-
   const [templates, setTemplates] = useState<WorkoutTemplate[]>([]);
-
   const [templateDetails, setTemplateDetails] =
     useState<WorkoutTemplate | null>(null);
 
+  
+  const isDeletingRef = useRef(false);
+
   const token = localStorage.getItem("token");
-
   const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
-
   const navigate = useNavigate();
 
   const fetchTemplates = useCallback(async () => {
-    if (!token) { 
-        setTemplates([]);
-        return;
+    if (!token) {
+      setTemplates([]);
+      return;
     }
     try {
-      const response = await fetch(
-        `${API_URL}/workout-template/me`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (!response.ok) throw new Error("Failed to fetch templates");
-      const data = await response.json();
-      setTemplates(data);
-    } catch (error) {
-      console.error("Error fetching templates:", error);
-      toast.error("Could not load templates.");
-    }
-  }, [token]);
-
-  const fetchTemplateDetails = useCallback(async (templateId: number) => {
-    if (!token) return;
-    try {
-      const response = await fetch(
-        `${API_URL}/workout-template/${templateId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-       if (!response.ok) throw new Error("Failed to fetch details");
-      const data = await response.json();
-      console.log("Fetched template details:", data);
-      setTemplateDetails(data);
-    } catch (error) {
-      console.error("Error fetching template details:", error);
-      toast.error("Could not load template details.");
-    }
-  }, [token]); 
-
-  const deleteTemplate = useCallback(async (templateId: number) => {
-    if (!token) return;
-    try {
-      const response = await fetch(`${API_URL}/workout-template/${templateId}`, {
-        method: "DELETE",
+      const response = await fetch(`${API_URL}/workout-template/me`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
-
-      if (!response.ok) {
-        toast.error("Failed to delete template.");
-        console.error("Failed to delete template:", response.status);
-        return;
-      }
-
-      toast.success("Template deleted.");
-      await fetchTemplates(); 
-      navigate("/templates");
-
+      if (!response.ok) throw new Error("Failed to fetch templates");
+      const data = await response.json();
+      setTemplates(data);
     } catch (error) {
-      console.error("Error deleting template:", error);
-      toast.error("An error occurred while deleting.");
+      console.error("Error fetching templates:", error);
+      
     }
-  }, [token, fetchTemplates, navigate]); 
+  }, [token, API_URL]);
+
+  const fetchTemplateDetails = useCallback(
+    async (templateId: number) => {
+      
+      if (!token || isDeletingRef.current) return;
+
+      try {
+        const response = await fetch(
+          `${API_URL}/workout-template/${templateId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        
+        if (response.status === 404) {
+          console.warn("Template not found (probably deleted).");
+          return;
+        }
+
+        if (!response.ok) throw new Error("Failed to fetch details");
+
+        const data = await response.json();
+        setTemplateDetails(data);
+      } catch (error) {
+        
+        if (!isDeletingRef.current) {
+          console.error("Error fetching template details:", error);
+          toast.error("Could not load template details.");
+        }
+      }
+    },
+    [token, API_URL]
+  );
+
+  const deleteTemplate = useCallback(
+    async (templateId: number) => {
+      if (!token) return;
+
+      
+      isDeletingRef.current = true;
+
+      try {
+        const response = await fetch(
+          `${API_URL}/workout-template/${templateId}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          toast.error("Failed to delete template.");
+          isDeletingRef.current = false; 
+          return;
+        }
+
+        toast.success("Template deleted.");
+
+        
+        setTemplates((prev) => prev.filter((t) => t.id !== templateId));
+
+        
+
+        navigate("/templates");
+      } catch (error) {
+        console.error("Error deleting template:", error);
+        toast.error("An error occurred while deleting.");
+      } finally {
+        
+        setTimeout(() => {
+          isDeletingRef.current = false;
+        }, 1000);
+      }
+    },
+    [token, navigate, API_URL]
+  );
 
   useEffect(() => {
     fetchTemplates();
@@ -131,7 +160,7 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({
         fetchTemplates,
         templateDetails,
         fetchTemplateDetails,
-        deleteTemplate
+        deleteTemplate,
       }}
     >
       {children}

@@ -20,7 +20,8 @@ interface UserContextType {
 export const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-
+  
+  // 1. To jest Twój adres backendu
   const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 
   const [user, setUser] = useState<User | null>(null);
@@ -28,13 +29,25 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     return JSON.parse(localStorage.getItem("favorites") || "[]");
   });
 
+  // 2. NOWA FUNKCJA POMOCNICZA
+  // Naprawia URL avatara zanim trafi do stanu aplikacji
+  const processUser = (userData: User): User => {
+    if (userData.avatarUrl && !userData.avatarUrl.startsWith("http")) {
+      // Jeśli URL jest relatywny (np. /uploads/...), doklejamy domenę
+      return {
+        ...userData,
+        avatarUrl: `${API_URL}${userData.avatarUrl}`,
+      };
+    }
+    return userData;
+  };
+
   const getFavorites = () => {
     if (user) return user.favorites;
     return localFavorites;
   };
 
   const toggleFavorites = async (id: number) => {
-    // if user not logged in, use localStorage
     if (!user) {
       setLocalFavorites((prev) => {
         let updated;
@@ -49,7 +62,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       return;
     }
 
-    // if user logged in, update on server
     const token = localStorage.getItem("token");
 
     try {
@@ -65,8 +77,12 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
       );
       if (!res.ok) throw new Error("Failed to update favorites");
+      
       const updatedUser = await res.json();
-      setUser(updatedUser);
+      
+      // 3. UŻYCIE POPRAWKI TUTAJ
+      setUser(processUser(updatedUser)); 
+
     } catch (err) {
       console.error(err);
     }
@@ -81,8 +97,12 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Failed to fetch user");
+      
       const data = await res.json();
-      setUser(data);
+      
+      // 4. I TUTAJ TEŻ
+      setUser(processUser(data)); 
+
     } catch (err) {
       console.error(err);
       setUser(null);
@@ -101,4 +121,3 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     </UserContext.Provider>
   );
 };
-
