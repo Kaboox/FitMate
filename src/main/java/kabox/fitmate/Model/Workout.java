@@ -1,7 +1,9 @@
 package kabox.fitmate.Model;
 
 import jakarta.persistence.*;
+import kabox.fitmate.enums.WorkoutSource;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,17 @@ public class Workout {
 
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WorkoutExercise> exercises = new ArrayList<>();
+
+    @Column(name = "date")
+    private LocalDateTime date;
+
+    @Column(name = "note", columnDefinition = "TEXT")
+    private String note;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "source")
+    private WorkoutSource source; // MANUAL OR AI_IMPORT
+
     public Long getId() {
         return id;
     }
@@ -44,5 +57,33 @@ public class Workout {
 
     public void setExercises(List<WorkoutExercise> exercises) {
         this.exercises = exercises;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public WorkoutSource getSource() {
+        return source;
+    }
+
+    public void setSource(WorkoutSource source) {
+        this.source = source;
+    }
+
+    public List<WorkoutExercise> getExercises() {
+        return exercises;
     }
 }

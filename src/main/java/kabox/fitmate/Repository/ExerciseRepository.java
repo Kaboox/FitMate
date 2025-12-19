@@ -10,7 +10,9 @@ import java.util.Optional;
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
     Optional<Exercise> findByName(String name);
 
-    // Cwiczenia po czesci nazwy np barbell - barbell row
+    Optional<Exercise> findByNameIgnoreCase(String name);
+
+    // Part of the name
     List<Exercise> findByNameContainingIgnoreCase(String fragment);
 
     List<Exercise> findByPrimaryMuscle(Muscle muscle);

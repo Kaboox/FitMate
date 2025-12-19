@@ -26,10 +26,10 @@ import java.util.stream.Collectors;
 @Service
 public class WorkoutTemplateService {
 
-    private WorkoutTemplateRepository workoutTemplateRepository;
-    private WorkoutTemplateExerciseRepository workoutTemplateExerciseRepository;
-    private ExerciseRepository exerciseRepository;
-    private UserRepository userRepository;
+    private final WorkoutTemplateRepository workoutTemplateRepository;
+    private final WorkoutTemplateExerciseRepository workoutTemplateExerciseRepository;
+    private final ExerciseRepository exerciseRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public WorkoutTemplateService(WorkoutTemplateRepository workoutTemplateRepository, WorkoutTemplateExerciseRepository workoutTemplateExerciseRepository, ExerciseRepository exerciseRepository ,UserRepository userRepository) {

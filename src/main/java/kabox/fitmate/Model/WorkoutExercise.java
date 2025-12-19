@@ -16,8 +16,17 @@ public class WorkoutExercise {
     private Workout workout;
 
     @ManyToOne
-    @JoinColumn(name = "exercise_id")
+    @JoinColumn(name = "exercise_id", nullable = true)
     private Exercise exercise;
+
+    /* LOGIC
+    * If exercise name found in db - exercise is set
+    * otherwise AI uses tempName
+    * */
+
+    // "SAFETY BUFOR"
+    @Column(name = "temp_name")
+    private String tempName;
 
     @OneToMany(mappedBy = "workoutExercise", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WorkoutSet> sets;
@@ -54,4 +63,11 @@ public class WorkoutExercise {
         this.sets = sets;
     }
 
+    public String getTempName() {
+        return tempName;
+    }
+
+    public void setTempName(String tempName) {
+        this.tempName = tempName;
+    }
 }
